@@ -6,7 +6,10 @@ import android.view.ViewGroup
 
 class FexBoxLayoutCustom @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-): ViewGroup(context, attrs, defStyleAttr) {
+) : ViewGroup(context, attrs, defStyleAttr) {
+
+    private val horizontalSpacing = 10 // Горизонтальный отступ между элементами
+    private val verticalSpacing = 10   // Вертикальный отступ между строками
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
@@ -26,9 +29,13 @@ class FexBoxLayoutCustom @JvmOverloads constructor(
             measureChild(child, childWidthSpec, childHeightSpec)
 
             if (currentWidth + child.measuredWidth > widthSize) {
-                totalHeight += currentHeight
+                totalHeight += currentHeight + verticalSpacing
                 currentWidth = 0
                 currentHeight = 0
+            }
+
+            if (currentWidth > 0) {
+                currentWidth += horizontalSpacing // Добавляем горизонтальный отступ
             }
 
             currentWidth += child.measuredWidth
@@ -54,13 +61,13 @@ class FexBoxLayoutCustom @JvmOverloads constructor(
 
             if (x + child.measuredWidth > width) {
                 x = 0
-                y += rowHeight
+                y += rowHeight + verticalSpacing // Добавляем вертикальный отступ
                 rowHeight = 0
             }
 
             child.layout(x, y, x + child.measuredWidth, y + child.measuredHeight)
 
-            x += child.measuredWidth
+            x += child.measuredWidth + horizontalSpacing // Добавляем горизонтальный отступ
             rowHeight = maxOf(rowHeight, child.measuredHeight)
         }
     }
