@@ -35,7 +35,7 @@ fun GitLabCard(
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier.widthIn(min = 320.dp).height(96.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
