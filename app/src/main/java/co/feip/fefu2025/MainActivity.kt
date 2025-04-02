@@ -10,15 +10,37 @@ import views.FexBoxLayoutCustom
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
+    private val flexBoxLayout: FexBoxLayoutCustom by lazy { findViewById(R.id.flexBox) }
+    private val button: Button by lazy { findViewById(R.id.addItemButton) }
 
-    private val flexBoxLayout : FexBoxLayoutCustom by lazy { findViewById(R.id.flexBox) }
-    private val button : Button by lazy { findViewById(R.id.addItemButton) }
-
-    val programmingLanguages = arrayOf(
-        "Java", "Kotlin", "Python", "C", "C++", "C#", "JavaScript", "TypeScript",
-        "Swift", "Go", "Rust", "PHP", "Ruby", "Dart", "Scala", "Perl", "Haskell",
-        "Objective-C", "Lua", "F#", "Elixir", "Clojure", "R", "Julia", "MATLAB"
-    )
+    val programmingLanguages =
+        arrayOf(
+            "Java",
+            "Kotlin",
+            "Python",
+            "C",
+            "C++",
+            "C#",
+            "JavaScript",
+            "TypeScript",
+            "Swift",
+            "Go",
+            "Rust",
+            "PHP",
+            "Ruby",
+            "Dart",
+            "Scala",
+            "Perl",
+            "Haskell",
+            "Objective-C",
+            "Lua",
+            "F#",
+            "Elixir",
+            "Clojure",
+            "R",
+            "Julia",
+            "MATLAB",
+        )
 
     fun getRandomColor(): Color {
         val red = Random.nextInt(0, 256) // Случайное значение от 0 до 255
@@ -29,14 +51,12 @@ class MainActivity : ComponentActivity() {
         return Color(alpha, red, green, blue) // Создаём цвет
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.main_activity)
 
-        button.setOnClickListener{
-
+        button.setOnClickListener {
             val tag = ProgrammingLanguageTag(this)
 
             val randomLanguage = programmingLanguages.random()
@@ -46,15 +66,10 @@ class MainActivity : ComponentActivity() {
             tag.setProperties(
                 randomLanguage,
                 randomColor,
-                randomPercent
+                randomPercent,
             )
 
-            flexBoxLayout.addView( tag);
+            flexBoxLayout.addView(tag)
         }
     }
-
-
 }
-
-
-
