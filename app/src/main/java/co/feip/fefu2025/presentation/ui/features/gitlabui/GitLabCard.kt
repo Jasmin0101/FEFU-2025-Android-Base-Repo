@@ -1,11 +1,10 @@
-package co.feip.fefu2025.git_lab_ui
+package co.feip.fefu2025.presentation.ui.features.gitlabui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
@@ -34,6 +33,9 @@ fun GitLabCard(
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = androidx.compose.material3.CardDefaults.cardColors(
+            containerColor = Color(0xffeee6f6)
+        )
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             if (avatarRes == null) {

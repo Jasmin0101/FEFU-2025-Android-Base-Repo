@@ -1,5 +1,7 @@
-package co.feip.fefu2025.pages
+package co.feip.fefu2025.presentation.ui.pages
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -41,17 +43,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import co.feip.fefu2025.data_class.Repository
-import co.feip.fefu2025.data_class.repositories
-import co.feip.fefu2025.git_lab_ui.GitLabCard
+import co.feip.fefu2025.presentation.ui.features.gitlabui.GitLabCard
+import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(
-    modifier : Modifier = Modifier,
-    repository: List<Repository>,
+    viewModel: RepositoriesViewModel = RepositoriesViewModel(),
+    modifier: Modifier =Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
+    val repositories by viewModel.repositories
 
     Scaffold(
         topBar = {
@@ -124,7 +127,7 @@ fun HomePage(
                 contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                items(repository.filter { it.isMyRepo == true }.take(10)) { repo -> // Фильтруем репозитории
+                items(repositories.filter { it.isMyRepo == true }.take(10)) { repo -> // Фильтруем репозитории
                     Box(
                         modifier = Modifier
                             .border(
@@ -165,12 +168,11 @@ fun HomePage(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                items(repository.take(10)) { repo ->
+                items(repositories.take(10)) { repo ->
 
                         GitLabCard(
                             repositoryName = repo.repositoryName,
                             description = repo.description,
-
                             stars = repo.stars,
                             forks = repo.forks,
                             avatarRes = repo.avatarRes
@@ -183,9 +185,10 @@ fun HomePage(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
-private fun PreviewHomePage(    modifier : Modifier = Modifier,) {
-    HomePage( repository =  repositories)
+private fun PreviewHomePage(modifier: Modifier = Modifier) {
+    HomePage()
 }
 

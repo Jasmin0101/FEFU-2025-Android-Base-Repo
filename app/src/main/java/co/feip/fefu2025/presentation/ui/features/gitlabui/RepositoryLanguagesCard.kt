@@ -1,4 +1,4 @@
-package co.feip.fefu2025.git_lab_ui
+package co.feip.fefu2025.presentation.ui.features.gitlabui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -31,8 +31,7 @@ import co.feip.fefu2025.R
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RepositoryLanguages(languages: List<LanguageData>,
-                        modifier : Modifier = Modifier,) {
+fun RepositoryLanguages(languages: List<LanguageData>) {
     Column(
         modifier =
             Modifier
@@ -86,7 +85,6 @@ fun RepositoryLanguages(languages: List<LanguageData>,
 @Composable
 fun LanguageItem(
     language: LanguageData,
-    modifier : Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -116,7 +114,7 @@ data class LanguageData(
 
 @Preview
 @Composable
-private fun PreviewRepositoryLanguages(    modifier : Modifier = Modifier,) {
+private fun PreviewRepositoryLanguages(modifier: Modifier = Modifier) {
     val languages =
         listOf(
             LanguageData("C++", 85.7f, Color(0xFFFF4081)),

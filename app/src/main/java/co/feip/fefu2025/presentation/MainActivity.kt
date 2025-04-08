@@ -1,11 +1,12 @@
-package co.feip.fefu2025
+package co.feip.fefu2025.presentation
 
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.graphics.Color
-import co.feip.fefu2025.views.custom.ProgrammingLanguageTag
+import co.feip.fefu2025.R
+import co.feip.fefu2025.presentation.custom.ProgrammingLanguageTag
 import views.FexBoxLayoutCustom
 import kotlin.random.Random
 
