@@ -1,4 +1,9 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@android:color/holo_blue_dark"/>
-    <corners android:radius='1000dp' /> <!-- Используем 50dp вместо 50% -->
-</shape>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@android:color/holo_red_dark"
+        android:pathData="M12,21C12,21 1,13 1,6A5,5 0,0,1 12,6A5,5 0,0,1 23,6C23,13 12,21 12,21Z"/>
+</vector>
