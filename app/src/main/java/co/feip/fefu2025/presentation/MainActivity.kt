@@ -1,76 +1,49 @@
 package co.feip.fefu2025.presentation
 
+import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.ui.graphics.Color
-import co.feip.fefu2025.R
-import co.feip.fefu2025.presentation.custom.ProgrammingLanguageTag
-import views.FexBoxLayoutCustom
-import kotlin.random.Random
+import androidx.annotation.RequiresApi
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
+import co.feip.fefu2025.navigation.Destination
+import co.feip.fefu2025.navigation.Navigator
+import co.feip.fefu2025.presentation.ui.pages.HomePage
+import org.koin.compose.koinInject
+
 
 class MainActivity : ComponentActivity() {
-    private val flexBoxLayout: FexBoxLayoutCustom by lazy { findViewById(R.id.flexBox) }
-    private val button: Button by lazy { findViewById(R.id.addItemButton) }
 
-    val programmingLanguages =
-        arrayOf(
-            "Java",
-            "Kotlin",
-            "Python",
-            "C",
-            "C++",
-            "C#",
-            "JavaScript",
-            "TypeScript",
-            "Swift",
-            "Go",
-            "Rust",
-            "PHP",
-            "Ruby",
-            "Dart",
-            "Scala",
-            "Perl",
-            "Haskell",
-            "Objective-C",
-            "Lua",
-            "F#",
-            "Elixir",
-            "Clojure",
-            "R",
-            "Julia",
-            "MATLAB",
-        )
-
-    fun getRandomColor(): Color {
-        val red = Random.nextInt(0, 256) // Случайное значение от 0 до 255
-        val green = Random.nextInt(0, 256)
-        val blue = Random.nextInt(0, 256)
-        val alpha = 255 // Прозрачность, можно сделать случайной тоже, если нужно
-
-        return Color(alpha, red, green, blue) // Создаём цвет
-    }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.main_activity)
+        setContent {
 
-        button.setOnClickListener {
-            val tag = ProgrammingLanguageTag(this)
+            val navigator = koinInject<Navigator>()
+            val navController = rememberNavController()
+            NavHost(
+                navController = navController,
+                startDestination = navigator.startDestination
+            ){
 
-            val randomLanguage = programmingLanguages.random()
-            val randomColor = getRandomColor()
-            var randomPercent = (Random.nextFloat() * 100)
+                navigation<Destination>(
+                    startDestination = Destination.HomePage
+                ){
+                    composable<Destination.HomePage> {
+                        HomePage()
+                    }
+                }
+            }
 
-            tag.setProperties(
-                randomLanguage,
-                randomColor,
-                randomPercent,
-            )
 
-            flexBoxLayout.addView(tag)
         }
+
+
     }
+
 }
