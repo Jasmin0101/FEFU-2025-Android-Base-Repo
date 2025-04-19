@@ -10,16 +10,14 @@ import co.feip.fefu2025.domain.usecase.GetRepositoryUseCase
 
 @RequiresApi(Build.VERSION_CODES.O)
 class RepositoryViewModel(
-    private val getRepositoryUseCase: GetRepositoryUseCase = GetRepositoryUseCase()
+    private val getRepositoryUseCase: GetRepositoryUseCase
 ) : ViewModel() {
 
     private val _repository = mutableStateOf<Repository?>(null)
     val repository: State<Repository?> = _repository
 
-
     @RequiresApi(Build.VERSION_CODES.O)
-    // временно сделано public
-     fun loadRepository(id: Int) {
+    fun loadRepository(id: Int) {
         _repository.value = getRepositoryUseCase.execute(id)
     }
 }

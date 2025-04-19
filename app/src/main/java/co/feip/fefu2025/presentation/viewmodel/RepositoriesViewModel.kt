@@ -10,16 +10,18 @@ import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 
 @RequiresApi(Build.VERSION_CODES.O)
 class RepositoriesViewModel(
-    private  val getRepositoriesUseCase:GetRepositoriesUseCase = GetRepositoriesUseCase()
-):ViewModel(){
+    private val getRepositoriesUseCase: GetRepositoriesUseCase
+) : ViewModel() {
+
     private val _repositories = mutableStateOf<List<Repository>>(emptyList())
     val repositories: State<List<Repository>> = _repositories
 
     init {
         loadRepositories()
     }
-     @RequiresApi(Build.VERSION_CODES.O)
-     private  fun loadRepositories(){
-         _repositories.value = getRepositoriesUseCase.execute()
-     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadRepositories() {
+        _repositories.value = getRepositoriesUseCase.execute()
+    }
 }

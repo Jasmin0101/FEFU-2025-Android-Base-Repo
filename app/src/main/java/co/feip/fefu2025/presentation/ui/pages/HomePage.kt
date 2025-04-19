@@ -50,7 +50,7 @@ import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(
-    viewModel: RepositoriesViewModel = RepositoriesViewModel(),
+    viewModel: RepositoriesViewModel = org.koin.androidx.compose.koinViewModel(),
     modifier: Modifier =Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }

@@ -8,14 +8,18 @@ import org.koin.core.context.GlobalContext.startKoin
 
 class App: Application() {
 
-    override fun onCreate(){
+    override fun onCreate() {
         super.onCreate()
-        startKoin{
-            androidContext(this@App)
-            androidLogger()
-
-            modules(navModule)
+        try {
+            startKoin {
+                androidLogger(org.koin.core.logger.Level.DEBUG)
+                androidContext(this@App)
+                modules(navModule)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
+
 
 }

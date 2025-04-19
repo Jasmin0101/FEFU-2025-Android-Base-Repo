@@ -43,7 +43,7 @@ import kotlin.random.Random
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun GitLabPage(
-    viewModel: RepositoryViewModel = RepositoryViewModel(),
+    viewModel: RepositoryViewModel = org.koin.androidx.compose.koinViewModel(),
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
 ) {
     val repository by viewModel.repository
