@@ -1,4 +1,4 @@
-package co.feip.fefu2025.presentation.ui.pages
+ package co.feip.fefu2025.presentation.ui.pages
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -43,70 +44,68 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import co.feip.fefu2025.data.repository.RepositoryRepository
+import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
+import co.feip.fefu2025.navigation.DefaultNavigator
+import co.feip.fefu2025.navigation.Destination
 import co.feip.fefu2025.presentation.ui.features.gitlabui.GitLabCard
 import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(
-    viewModel: RepositoriesViewModel = RepositoriesViewModel(),
-    modifier: Modifier =Modifier
+     viewModel: RepositoriesViewModel = koinViewModel(),
+     modifier: Modifier =Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val repositories by viewModel.repositories
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                modifier =
-                Modifier
+
+            Column(
+                modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp), // Ограниченная высота AppBar
-                colors =
-                TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                ),
-                title = {
-                    Row(
-                        modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 20.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        OutlinedTextField(
-                            value = searchQuery,
-                            onValueChange = { searchQuery = it },
-                            placeholder = { Text("Search...") },
-                            modifier =
-                            Modifier
-                                .weight(1f)
-                                .clip(RoundedCornerShape(16.dp))
-                                .border(
-                                    width = 2.dp,
-                                    brush =
-                                    Brush.linearGradient(
-                                        colors = listOf(Color(0xffbf02b3), Color(0xffd18006)),
-                                    ),
-                                    shape = RoundedCornerShape(16.dp),
-                                ).background(color = Color(0xffffffff)),
-                            singleLine = true,
-                        )
-                        Button(
-                            onClick = { },
-                            shape = RoundedCornerShape(16.dp),
-                            modifier = Modifier.height(56.dp),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Search,
-                                contentDescription = "Search",
-                                modifier = Modifier.size(32.dp),
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                    .padding(vertical = 12.dp, horizontal = 16.dp, ),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        placeholder = { Text("Search...") },
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(16.dp))
+                            .border(
+                                width = 2.dp,
+                                brush = Brush.linearGradient(
+                                    colors = listOf(Color(0xffbf02b3), Color(0xffd18006)),
+                                ),
+                                shape = RoundedCornerShape(16.dp),
                             )
-                        }
+                            .background(color = Color(0xffffffff)),
+                        singleLine = true,
+                    )
+                    Button(
+                        onClick = { },
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.height(56.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = "Search",
+                            modifier = Modifier.size(32.dp),
+                        )
                     }
-                },
-            )
+                }
+            }
         },
     ) { paddingValues ->
         Column(
@@ -115,12 +114,16 @@ fun HomePage(
                 .padding(paddingValues),
         ) {
             Spacer(Modifier.height(16.dp))
-            Text(
-                text = "My Stars",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-            )
+            TextButton(
+                onClick = {  viewModel.navigateMyStars() },
+                modifier = Modifier.padding(vertical = 8.dp),
+            ) {
+                Text(
+                    text = "My Stars",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
 
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -144,8 +147,12 @@ fun HomePage(
 
                             stars = repo.stars,
                             forks = repo.forks,
-                            avatarRes = repo.avatarRes  // Если avatarRes отсутствует, использовать дефолтный
+                            avatarRes = repo.avatarRes,
 
+                            onCardClick = {
+
+                                viewModel.navigateRepository(repo.id)
+                            }  // Если avatarRes отсутствует, использовать дефолтный
                         )
                     }
                 }
@@ -175,8 +182,10 @@ fun HomePage(
                             description = repo.description,
                             stars = repo.stars,
                             forks = repo.forks,
-                            avatarRes = repo.avatarRes
-
+                            avatarRes = repo.avatarRes,
+                            onCardClick = {
+                                viewModel.navigateRepository(repo.id)
+                            }
                         )
 
                 }
@@ -185,10 +194,19 @@ fun HomePage(
     }
 }
 
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun PreviewHomePage(modifier: Modifier = Modifier) {
-    HomePage()
+
+    HomePage(    viewModel = RepositoriesViewModel(
+        getRepositoriesUseCase = GetRepositoriesUseCase(
+            repository = RepositoryRepository()
+        ),
+        navigator = DefaultNavigator(
+            startDestination = Destination.BaseGraph
+        )
+    ))
 }
 

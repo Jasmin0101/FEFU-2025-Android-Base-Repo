@@ -17,9 +17,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,22 +44,44 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import co.feip.fefu2025.presentation.custom.ProgrammingLanguageTag
 import co.feip.fefu2025.presentation.viewmodel.RepositoryViewModel
+import org.koin.androidx.compose.koinViewModel
 import views.FexBoxLayoutCustom
 import kotlin.random.Random
 
 @RequiresApi(Build.VERSION_CODES.O)
+@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GitLabPage(
-    viewModel: RepositoryViewModel = RepositoryViewModel(),
+    viewModel: RepositoryViewModel = koinViewModel(),
+    repositoryId : Int,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
 ) {
     val repository by viewModel.repository
-    if (repository == null) {
-        viewModel.loadRepository(1)
-    }
+
+    viewModel.loadRepository(repositoryId)
 
 
-    Scaffold { paddingValues ->
+
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                title = {
+                    repository?.let { Text(text = it.repositoryName) }
+                },
+                navigationIcon = {
+                    IconButton(onClick = {viewModel.navigateHome()  }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }
+    ){
+
+        paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -174,11 +203,14 @@ fun CustomFlexBoxScreen(
     )
 }
 
+@ExperimentalMaterial3Api
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun PreviewPage(modifier: Modifier = Modifier) {
-    GitLabPage()
+    GitLabPage(
+        repositoryId = 1
+    )
 }
 
 fun getRandomColor(): Color = Color(Random.nextInt(0, 256), Random.nextInt(0, 256), Random.nextInt(0, 256))

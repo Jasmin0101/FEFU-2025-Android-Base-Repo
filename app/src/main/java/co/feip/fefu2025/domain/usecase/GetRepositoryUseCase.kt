@@ -6,7 +6,7 @@ import co.feip.fefu2025.data.repository.RepositoryRepository
 import co.feip.fefu2025.domain.model.Repository
 
 class GetRepositoryUseCase(
-    private val repository: RepositoryRepository = RepositoryRepository()
+    private val repository: RepositoryRepository
 ) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun execute(id: Int): Repository? {

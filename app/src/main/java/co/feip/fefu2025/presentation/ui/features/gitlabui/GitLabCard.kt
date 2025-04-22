@@ -1,6 +1,7 @@
 package co.feip.fefu2025.presentation.ui.features.gitlabui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,14 +29,16 @@ fun GitLabCard(
     forks: Int,
     avatarRes: Int? = null,
     modifier : Modifier = Modifier,
+    onCardClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onCardClick() }, // Обработчик нажатияs,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = androidx.compose.material3.CardDefaults.cardColors(
+        colors = CardDefaults.cardColors(
             containerColor = Color(0xffeee6f6)
         )
+
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             if (avatarRes == null) {
@@ -80,5 +83,6 @@ private fun PreviewGitLabCard( modifier : Modifier = Modifier,) {
         stars = 42,
         forks = 10,
         avatarRes = R.drawable.cruto,
+        onCardClick = {}
     )
 }
