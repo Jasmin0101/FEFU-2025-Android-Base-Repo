@@ -8,6 +8,6 @@ import co.feip.fefu2025.domain.model.Repository
 class GetRepositoriesUseCase(
     private val repository: RepositoryRepository
 ) {
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun execute(): List<Repository> = repository.getAllRepositories()
 }

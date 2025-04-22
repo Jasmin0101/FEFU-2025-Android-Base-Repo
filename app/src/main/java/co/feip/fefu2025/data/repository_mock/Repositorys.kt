@@ -1,12 +1,13 @@
 package co.feip.fefu2025.data.repository_mock
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import co.feip.fefu2025.R
 import co.feip.fefu2025.domain.model.Repository
 import java.time.LocalDate
 
-@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("NewApi")
 val repositories = listOf(
     Repository(
         id = 1,
