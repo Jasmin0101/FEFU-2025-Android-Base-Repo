@@ -45,15 +45,14 @@ fun ShimmerGitLabCard(
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
 
-                Box(modifier = Modifier.size(48.dp).shimmerEffect())
-
+            Box(modifier = Modifier.size(48.dp).clip(CircleShape).shimmerEffect())
 
             Spacer(modifier = Modifier.width(16.dp))
             Column {
 
-                Box(modifier = Modifier.height(18.dp).width(200.dp).shimmerEffect())
-                Spacer(Modifier.size(10.dp))
-                Box(modifier = Modifier.height(18.dp).width(250.dp).shimmerEffect())
+                Box(modifier = Modifier.height(20.dp).width(300.dp).clip(RoundedCornerShape(8.dp)).shimmerEffect())
+                Spacer(Modifier.size(20.dp))
+                Box(modifier = Modifier.height(20.dp).width(250.dp).clip(RoundedCornerShape(8.dp)).shimmerEffect())
 
             }
         }

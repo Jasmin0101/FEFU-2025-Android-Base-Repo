@@ -1,5 +1,6 @@
 package co.feip.fefu2025.presentation.ui.features.ui
 
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -32,7 +33,8 @@ fun Modifier.shimmerEffect(): Modifier = composed {
         targetValue =  2*size.width.toFloat(),
         animationSpec = infiniteRepeatable(
             tween(
-                durationMillis = 1000
+                durationMillis = 1500
+
             )
         )
     )
@@ -42,7 +44,8 @@ fun Modifier.shimmerEffect(): Modifier = composed {
             colors = listOf(
                 Color(0xFFE06CD8),
                 Color(0xFFCC9E64),
-                Color(0xFFE8DC98)
+                Color(0xFFE8DC98),
+                        Color(0xFFE37373),
             ),
             start =  Offset(startOffsetX,0f),
             end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())

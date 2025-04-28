@@ -107,7 +107,7 @@ fun Error(viewModel: RepositoriesViewModel = koinViewModel(),
         ) {
             Spacer(Modifier.height(16.dp))
             TextButton(
-                onClick = {   },
+                onClick = { viewModel.retry()},
                 modifier = Modifier.padding(vertical = 8.dp),
             ) {
                 Text(

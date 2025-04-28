@@ -10,11 +10,11 @@ import kotlinx.coroutines.delay
 class RepositoryRepository {
 
     suspend  fun getAllRepositories(): List<Repository> {
-        delay(3000)
+        delay(5000)
         return repositories
     }
     suspend  fun getRepositoryById(id: Int): Repository? {
-        delay(3000)
+        delay(5000)
         return repositories.find { it.id == id }
     }
 }
