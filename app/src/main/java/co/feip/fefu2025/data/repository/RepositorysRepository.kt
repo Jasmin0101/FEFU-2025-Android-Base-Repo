@@ -4,14 +4,17 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import co.feip.fefu2025.data.repository_mock.repositories
 import co.feip.fefu2025.domain.model.Repository
+import kotlinx.coroutines.delay
 
 
 class RepositoryRepository {
 
-    fun getAllRepositories(): List<Repository> {
+    suspend  fun getAllRepositories(): List<Repository> {
+        delay(3000)
         return repositories
     }
-    fun getRepositoryById(id: Int): Repository? {
+    suspend  fun getRepositoryById(id: Int): Repository? {
+        delay(3000)
         return repositories.find { it.id == id }
     }
 }

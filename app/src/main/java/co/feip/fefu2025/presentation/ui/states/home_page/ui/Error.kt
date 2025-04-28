@@ -1,23 +1,18 @@
- package co.feip.fefu2025.presentation.ui.pages
+package co.feip.fefu2025.presentation.ui.states.home_page.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
@@ -33,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -45,15 +41,12 @@ import co.feip.fefu2025.data.repository.RepositoryRepository
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.navigation.DefaultNavigator
 import co.feip.fefu2025.navigation.Destination
-import co.feip.fefu2025.presentation.ui.features.gitlabui.ui.GitLabCard
 import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
- @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomePage(
-     viewModel: RepositoriesViewModel = koinViewModel(),
-     modifier: Modifier =Modifier
+fun Error(viewModel: RepositoriesViewModel = koinViewModel(),
+          modifier: Modifier = Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val repositories by viewModel.repositories
@@ -108,88 +101,26 @@ fun HomePage(
         Column(
             modifier =
             Modifier
-                .padding(paddingValues),
+                .padding(paddingValues).fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(16.dp))
             TextButton(
-                onClick = {  viewModel.navigateMyStars() },
+                onClick = {   },
                 modifier = Modifier.padding(vertical = 8.dp),
             ) {
                 Text(
-                    text = "My Stars",
+                    text = "Oops, something's wrong.:/ \n " +
+                            "Repeat?",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
-
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                items(repositories.filter { it.isMyRepo == true }.take(10)) { repo -> // Фильтруем репозитории
-                    Box(
-                        modifier = Modifier
-                            .border(
-                                width = 4.dp,
-                                brush = Brush.linearGradient(
-                                    colors = listOf(Color(0xffbf02b3), Color(0xffd18006))
-                                ),
-                                shape = RoundedCornerShape(10.dp)
-                            )
-                    ) {
-                        GitLabCard(
-                            repositoryName = repo.repositoryName,
-                            description = repo.description,
-
-                            stars = repo.stars,
-                            forks = repo.forks,
-                            avatarRes = repo.avatarRes,
-
-                            onCardClick = {
-
-                                viewModel.navigateRepository(repo.id)
-                            }  // Если avatarRes отсутствует, использовать дефолтный
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "All Projects",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-            )
-
-            LazyColumn(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                items(repositories.take(10)) { repo ->
-
-                        GitLabCard(
-                            repositoryName = repo.repositoryName,
-                            description = repo.description,
-                            stars = repo.stars,
-                            forks = repo.forks,
-                            avatarRes = repo.avatarRes,
-                            onCardClick = {
-                                viewModel.navigateRepository(repo.id)
-                            }
-                        )
-
-                }
-            }
         }
     }
 }
+
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -197,13 +128,14 @@ fun HomePage(
 @Preview
 private fun PreviewHomePage(modifier: Modifier = Modifier) {
 
-    HomePage(    viewModel = RepositoriesViewModel(
+    Error(    viewModel = RepositoriesViewModel(
         getRepositoriesUseCase = GetRepositoriesUseCase(
             repository = RepositoryRepository()
         ),
         navigator = DefaultNavigator(
             startDestination = Destination.BaseGraph
         )
-    ))
+    )
+    )
 }
 

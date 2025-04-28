@@ -23,7 +23,7 @@ class RepositoryViewModel(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadRepository(id: Int) {
-        _repository.value = getRepositoryUseCase.execute(id)
+       viewModelScope.launch {  _repository.value = getRepositoryUseCase.execute(id)}
     }
 
     fun navigateHome() {

@@ -26,7 +26,9 @@ class  RepositoriesViewModel(
     }
 
     private fun loadRepositories() {
+        viewModelScope.launch {
         _repositories.value = getRepositoriesUseCase.execute()
+        }
     }
 
     fun navigateRepository(id: Int) {

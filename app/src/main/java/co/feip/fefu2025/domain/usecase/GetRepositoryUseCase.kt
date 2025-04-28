@@ -9,7 +9,7 @@ class GetRepositoryUseCase(
     private val repository: RepositoryRepository
 ) {
     @RequiresApi(Build.VERSION_CODES.O)
-    fun execute(id: Int): Repository? {
+    suspend fun execute(id: Int): Repository? {
         return repository.getRepositoryById(id)
     }
 }

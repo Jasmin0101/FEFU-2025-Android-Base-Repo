@@ -1,4 +1,4 @@
- package co.feip.fefu2025.presentation.ui.pages
+package co.feip.fefu2025.presentation.ui.pages
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -49,11 +49,11 @@ import co.feip.fefu2025.presentation.ui.features.gitlabui.ui.GitLabCard
 import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
- @RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomePage(
-     viewModel: RepositoriesViewModel = koinViewModel(),
-     modifier: Modifier =Modifier
+fun Loaded(
+    viewModel: RepositoriesViewModel = koinViewModel(),
+    modifier: Modifier =Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val repositories by viewModel.repositories
@@ -174,16 +174,16 @@ fun HomePage(
             ) {
                 items(repositories.take(10)) { repo ->
 
-                        GitLabCard(
-                            repositoryName = repo.repositoryName,
-                            description = repo.description,
-                            stars = repo.stars,
-                            forks = repo.forks,
-                            avatarRes = repo.avatarRes,
-                            onCardClick = {
-                                viewModel.navigateRepository(repo.id)
-                            }
-                        )
+                    GitLabCard(
+                        repositoryName = repo.repositoryName,
+                        description = repo.description,
+                        stars = repo.stars,
+                        forks = repo.forks,
+                        avatarRes = repo.avatarRes,
+                        onCardClick = {
+                            viewModel.navigateRepository(repo.id)
+                        }
+                    )
 
                 }
             }
@@ -197,7 +197,7 @@ fun HomePage(
 @Preview
 private fun PreviewHomePage(modifier: Modifier = Modifier) {
 
-    HomePage(    viewModel = RepositoriesViewModel(
+    Loaded(    viewModel = RepositoriesViewModel(
         getRepositoriesUseCase = GetRepositoriesUseCase(
             repository = RepositoryRepository()
         ),
