@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,6 +47,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun Error(viewModel: RepositoriesViewModel = koinViewModel(),
+          paddingValues: PaddingValues,
+
           modifier: Modifier = Modifier
 ) {
     var searchQuery by remember { mutableStateOf("") }
@@ -122,20 +125,20 @@ fun Error(viewModel: RepositoriesViewModel = koinViewModel(),
 }
 
 
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-@Preview
-private fun PreviewHomePage(modifier: Modifier = Modifier) {
-
-    Error(    viewModel = RepositoriesViewModel(
-        getRepositoriesUseCase = GetRepositoriesUseCase(
-            repository = RepositoryRepository()
-        ),
-        navigator = DefaultNavigator(
-            startDestination = Destination.BaseGraph
-        )
-    )
-    )
-}
+//
+//@RequiresApi(Build.VERSION_CODES.O)
+//@Composable
+//@Preview
+//private fun PreviewHomePage(modifier: Modifier = Modifier) {
+//
+//    Error(    viewModel = RepositoriesViewModel(
+//        getRepositoriesUseCase = GetRepositoriesUseCase(
+//            repository = RepositoryRepository()
+//        ),
+//        navigator = DefaultNavigator(
+//            startDestination = Destination.BaseGraph
+//        )
+//    )
+//    )
+//}
 

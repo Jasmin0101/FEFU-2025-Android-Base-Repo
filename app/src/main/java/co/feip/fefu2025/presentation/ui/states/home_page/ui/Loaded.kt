@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.feip.fefu2025.data.repository.RepositoryRepository
+import co.feip.fefu2025.data.repository_mock.repositories
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.navigation.DefaultNavigator
 import co.feip.fefu2025.navigation.Destination
@@ -53,58 +54,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun Loaded(
     viewModel: RepositoriesViewModel = koinViewModel(),
+    paddingValues: PaddingValues,
     modifier: Modifier =Modifier
 ) {
-    var searchQuery by remember { mutableStateOf("") }
-    val repositories by viewModel.repositories
 
-    Scaffold(
-        topBar = {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
-                    .padding(vertical = 12.dp, horizontal = 16.dp, ),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Spacer(Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    OutlinedTextField(
-                        value = searchQuery,
-                        onValueChange = { searchQuery = it },
-                        placeholder = { Text("Search...") },
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(16.dp))
-                            .border(
-                                width = 2.dp,
-                                brush = Brush.linearGradient(
-                                    colors = listOf(Color(0xffbf02b3), Color(0xffd18006)),
-                                ),
-                                shape = RoundedCornerShape(16.dp),
-                            )
-                            .background(color = Color(0xffffffff)),
-                        singleLine = true,
-                    )
-                    Button(
-                        onClick = { },
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier.height(56.dp),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = "Search",
-                            modifier = Modifier.size(32.dp),
-                        )
-                    }
-                }
-            }
-        },
-    ) { paddingValues ->
         Column(
             modifier =
             Modifier
@@ -188,22 +141,22 @@ fun Loaded(
                 }
             }
         }
-    }
+
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-@Preview
-private fun PreviewHomePage(modifier: Modifier = Modifier) {
-
-    Loaded(    viewModel = RepositoriesViewModel(
-        getRepositoriesUseCase = GetRepositoriesUseCase(
-            repository = RepositoryRepository()
-        ),
-        navigator = DefaultNavigator(
-            startDestination = Destination.BaseGraph
-        )
-    ))
-}
+//@RequiresApi(Build.VERSION_CODES.O)
+//@Composable
+//@Preview
+//private fun PreviewHomePage(modifier: Modifier = Modifier) {
+//
+//    Loaded(    viewModel = RepositoriesViewModel(
+//        getRepositoriesUseCase = GetRepositoriesUseCase(
+//            repository = RepositoryRepository()
+//        ),
+//        navigator = DefaultNavigator(
+//            startDestination = Destination.BaseGraph
+//        )
+//    ))
+//}
 

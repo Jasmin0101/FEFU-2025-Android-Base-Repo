@@ -14,6 +14,7 @@ import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.navigation.Destination
 import co.feip.fefu2025.navigation.Navigator
 import co.feip.fefu2025.presentation.ui.states.home_page.HomePageState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -26,21 +27,45 @@ class  RepositoriesViewModel(
     val repositories: State<List<Repository>> = _repositories
     var homePageState by mutableStateOf<HomePageState>(HomePageState.Loading)
         private set
+    private val _searchResults = mutableStateOf<List<Repository>>(emptyList())
+
+    var isSearching by mutableStateOf(false)
+        private set
 
     init {
         loadRepositories()
     }
 
+
+    fun searchRepositories(query: String) {
+        viewModelScope.launch {
+            isSearching = true
+
+            delay(300) // Чтобы не реагировать на каждый символ моментально
+
+            if (query.isBlank()) {
+                _searchResults.value = emptyList()
+                isSearching = false
+                return@launch
+            }
+
+            val allRepositories = repositories.value
+            _searchResults.value = allRepositories.filter {
+                it.repositoryName.contains(query, ignoreCase = true)
+            }
+
+            isSearching = false
+        }
+    }
+
     private fun loadRepositories() {
         viewModelScope.launch {
             try {
-                // Случайно генерируем ошибку или успешный результат
+
                 if (Random.nextBoolean()) {
-                    // Эмуляция успешного получения данных
                     _repositories.value = getRepositoriesUseCase.execute()
                     homePageState = HomePageState.Loaded
                 } else {
-                    // Эмуляция ошибки
                     throw Exception("Random error occurred")
                 }
             } catch (e: Exception) {
@@ -49,11 +74,8 @@ class  RepositoriesViewModel(
         }
     }
 
-    // Функция для повторной загрузки данных
     fun retry() {
-        // Сначала меняем состояние на Loading
         homePageState = HomePageState.Loading
-        // Затем вызываем загрузку данных
         loadRepositories()
     }
     fun navigateRepository(id: Int) {
