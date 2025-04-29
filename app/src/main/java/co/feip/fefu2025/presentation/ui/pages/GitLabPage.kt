@@ -43,6 +43,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import co.feip.fefu2025.presentation.custom.ProgrammingLanguageTag
+import co.feip.fefu2025.presentation.ui.states.git_lab_page.GitLabPageState
+import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.ErrorGitLabState
+import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.LoadedGitLabState
+import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.LoadingGitLabState
+import co.feip.fefu2025.presentation.ui.states.home_page.HomePageState
+import co.feip.fefu2025.presentation.ui.states.home_page.ui.ErrorHomePage
 import co.feip.fefu2025.presentation.viewmodel.RepositoryViewModel
 import org.koin.androidx.compose.koinViewModel
 import views.FexBoxLayoutCustom
@@ -60,8 +66,6 @@ fun GitLabPage(
     val repository by viewModel.repository
 
     viewModel.loadRepository(repositoryId)
-
-
 
     Scaffold (
         topBar = {
@@ -82,91 +86,15 @@ fun GitLabPage(
     ){
 
         paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .padding(16.dp)
-                .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
-                .padding(16.dp),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), shape = MaterialTheme.shapes.medium)
-                    .padding(16.dp),
-            ) {
-                repository?.avatarRes?.let {
-                    Image(
-                        painter = painterResource(id = it),
-                        contentDescription = "Avatar",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .clip(CircleShape).border(
-                                width = 4.dp,
-                                brush = Brush.linearGradient(
-                                    colors = listOf(Color(0xffbf02b3), Color(0xffd18006))
-                                ),
-                                shape = RoundedCornerShape(70.dp)
-                            ),
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                }
-
-                repository?.let {
-                    Text(
-                        text = it.repositoryName,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
+        when (val state = viewModel.gitLabPageState) {
+            is GitLabPageState.Loading -> {
+                LoadingGitLabState(paddingValues)
             }
-
-            repository?.let {
-                Text(
-                    text = it.description,
-                    fontSize = 16.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
+            is GitLabPageState.Loaded -> {
+                LoadedGitLabState(repositoryId = repositoryId, viewModel = viewModel, paddingValues = paddingValues)
             }
-
-            // Показываем дату создания репозитория
-            repository?.let {
-                Text(
-                    text = "📅 Created: ${it.date.dayOfMonth}.${it.date.monthValue}.${it.date.year}",
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp),
-                )
-            }
-
-            // Показываем количество звезд и форков
-            repository?.let {
-                Row(modifier = Modifier.padding(top = 8.dp)) {
-                    Text(text = "⭐ Stars: ${it.stars}", fontSize = 14.sp, fontWeight = FontWeight.Medium)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = "🔄 Forks: ${it.forks}", fontSize = 14.sp, fontWeight = FontWeight.Medium)
-                }
-            }
-
-            // Если есть языки, показываем их в FlexBox
-            repository?.languages?.let { languages ->
-                if (languages.isNotEmpty()) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 12.dp)
-                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), shape = MaterialTheme.shapes.medium)
-                            .padding(16.dp),
-                    ) {
-                        Text(text = "Languages:", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        CustomFlexBoxScreen(languages.keys.toList())
-                    }
-                }
+            is GitLabPageState.Error -> {
+                ErrorGitLabState(repositoryId, viewModel)
             }
         }
     }

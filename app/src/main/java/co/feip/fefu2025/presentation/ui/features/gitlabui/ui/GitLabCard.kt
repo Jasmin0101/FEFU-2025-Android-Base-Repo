@@ -1,4 +1,4 @@
-package co.feip.fefu2025.presentation.ui.features.gitlabui
+package co.feip.fefu2025.presentation.ui.features.gitlabui.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

@@ -19,6 +19,7 @@ import co.feip.fefu2025.navigation.ObserveAsEvents
 import co.feip.fefu2025.presentation.ui.pages.GitLabPage
 import co.feip.fefu2025.presentation.ui.pages.HomePage
 import co.feip.fefu2025.presentation.ui.pages.MyStarsPage
+import co.feip.fefu2025.presentation.ui.pages.SearchScreenPage
 import org.koin.compose.koinInject
 
 
@@ -58,6 +59,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Destination.MyStars> {
                         MyStarsPage()
+                    }
+                    composable<Destination.SearchScreenPage> {
+                        SearchScreenPage()
                     }
 
                     composable<Destination.Repository> {

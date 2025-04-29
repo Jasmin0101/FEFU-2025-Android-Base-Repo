@@ -67,4 +67,8 @@ dependencies {
     implementation(libs.bundles.koin.compose)
     implementation(libs.androidx.compose.navigation)
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.kotlinx.coroutines.core)
+
+
 }

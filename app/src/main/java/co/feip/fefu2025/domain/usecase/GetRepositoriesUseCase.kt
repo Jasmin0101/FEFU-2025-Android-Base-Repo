@@ -9,5 +9,5 @@ class GetRepositoriesUseCase(
     private val repository: RepositoryRepository
 ) {
 
-    fun execute(): List<Repository> = repository.getAllRepositories()
+    suspend fun execute(): List<Repository> = repository.getAllRepositories()
 }
