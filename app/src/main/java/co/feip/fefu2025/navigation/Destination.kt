@@ -16,4 +16,7 @@ sealed interface Destination {
 
     @Serializable
     data object MyStars: Destination
+
+    @Serializable
+    data object  SearchScreenPage: Destination
 }

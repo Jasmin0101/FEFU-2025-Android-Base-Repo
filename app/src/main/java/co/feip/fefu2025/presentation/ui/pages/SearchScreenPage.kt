@@ -1,6 +1,5 @@
 package co.feip.fefu2025.presentation.ui.pages
 
-import Loading
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -33,22 +32,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import co.feip.fefu2025.data.repository.RepositoryRepository
-import co.feip.fefu2025.data.repository_mock.repositories
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.navigation.DefaultNavigator
 import co.feip.fefu2025.navigation.Destination
 import co.feip.fefu2025.presentation.ui.features.gitlabui.ui.GitLabCard
-import co.feip.fefu2025.presentation.ui.states.home_page.HomePageState
-import co.feip.fefu2025.presentation.ui.states.home_page.ui.Error
+import co.feip.fefu2025.presentation.ui.states.search_page.ui.LoadingSearchScreen
 import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 import org.koin.androidx.compose.koinViewModel
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreenPage(viewModel: RepositoriesViewModel = koinViewModel()) {
     var searchQuery by remember { mutableStateOf("") }
-    val searchResults = viewModel.repositories
+    val searchResults = viewModel.searchResults
     val isLoading = viewModel.isSearching
 
     Scaffold(
@@ -100,19 +96,17 @@ fun SearchScreenPage(viewModel: RepositoriesViewModel = koinViewModel()) {
 
             when {
                 isLoading -> {
-                    Loading(viewModel,paddingValues)
+                    LoadingSearchScreen()
                 }
                 searchQuery.isEmpty() -> {
                     Text("Write to start your search :3", style = MaterialTheme.typography.bodyLarge)
                 }
                 searchResults.value.isEmpty() -> {
-                    Text("Nothing found :0 \n" +
-                            " Try searching for an existing repository :|", style = MaterialTheme.typography.bodyLarge)
+                    Text("Nothing found :0 \n Try searching for an existing repository :|", style = MaterialTheme.typography.bodyLarge)
                 }
                 else -> {
                     LazyColumn(
-                        modifier =
-                        Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentHeight()
                             .padding(16.dp),
@@ -124,21 +118,18 @@ fun SearchScreenPage(viewModel: RepositoriesViewModel = koinViewModel()) {
                                 description = repository.description ?: "",
                                 stars = repository.stars,
                                 forks = repository.forks,
-                                avatarRes = null,
+                                avatarRes = repository.avatarRes,
                                 onCardClick = {
                                     viewModel.navigateRepository(repository.id)
                                 }
                             )
                         }
                     }
-                    }
                 }
             }
         }
     }
-
-
-
+}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
@@ -155,3 +146,5 @@ private fun PreviewHomePage() {
         )
     )
 }
+
+

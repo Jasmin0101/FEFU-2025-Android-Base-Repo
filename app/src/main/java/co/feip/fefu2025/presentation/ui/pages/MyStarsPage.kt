@@ -1,5 +1,8 @@
 package co.feip.fefu2025.presentation.ui.pages
 
+import LoadingHomePage
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,16 +36,22 @@ import co.feip.fefu2025.navigation.DefaultNavigator
 import co.feip.fefu2025.navigation.Destination
 import co.feip.fefu2025.presentation.ui.features.gitlabui.ui.GitLabCard
 import co.feip.fefu2025.presentation.ui.features.ui.GradientText
+import co.feip.fefu2025.presentation.ui.states.home_page.HomePageState
+import co.feip.fefu2025.presentation.ui.states.home_page.MyStarsStatePage
+import co.feip.fefu2025.presentation.ui.states.home_page.ui.ErrorHomePage
+import co.feip.fefu2025.presentation.ui.states.my_stars.ui.ErrorMyStarsPage
+import co.feip.fefu2025.presentation.ui.states.my_stars.ui.LoadedMyStarsPage
+import co.feip.fefu2025.presentation.ui.states.my_stars.ui.LoadingMyStarsPage
 import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyStarsPage(
     viewModel: RepositoriesViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
-    var searchQuery by remember { mutableStateOf("") }
     val repositories by viewModel.repositories
 
     Scaffold(
@@ -63,57 +72,25 @@ fun MyStarsPage(
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier =
-            Modifier
-                .padding(paddingValues),
-        ) {
 
-
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "All Projects",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-            )
-
-            LazyColumn(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-
-
-                    items(repositories.filter { it.isMyRepo == true }.take(10)) { repo -> // Фильтруем репозитории
-
-
-                            GitLabCard(
-                                repositoryName = repo.repositoryName,
-                                description = repo.description,
-
-                                stars = repo.stars,
-                                forks = repo.forks,
-                                avatarRes = repo.avatarRes,
-
-                                onCardClick = {
-                                    viewModel.navigateRepository(repo.id)
-                                }
-                            )
-
-                    }
-                }
-
+        when (val state = viewModel.myStarsPageState) {
+            is MyStarsStatePage.Loading -> {
+                LoadingMyStarsPage( paddingValues)
             }
-    }
+            is MyStarsStatePage.Loaded -> {
+                LoadedMyStarsPage(viewModel, paddingValues )
+            }
+            is MyStarsStatePage.Error -> {
+                ErrorMyStarsPage(viewModel, paddingValues)
+            }
+
+            else -> {}
         }
+    }
+}
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun  PreviewMyStars(){

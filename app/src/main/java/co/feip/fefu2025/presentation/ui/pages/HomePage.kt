@@ -1,6 +1,6 @@
  package co.feip.fefu2025.presentation.ui.pages
 
-import Loading
+import LoadingHomePage
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +34,7 @@ import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.navigation.DefaultNavigator
 import co.feip.fefu2025.navigation.Destination
 import co.feip.fefu2025.presentation.ui.states.home_page.HomePageState
-import co.feip.fefu2025.presentation.ui.states.home_page.ui.Error
+import co.feip.fefu2025.presentation.ui.states.home_page.ui.ErrorHomePage
 import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -58,8 +59,11 @@ import org.koin.androidx.compose.koinViewModel
                 ) {
                      OutlinedTextField(
                          value = searchQuery,
-                         onValueChange = { searchQuery = it },
+
+                         onValueChange = {  },
+                         readOnly = true,
                          placeholder = { Text("Search...") },
+
                          modifier = Modifier
                              .weight(1f)
                              .clip(RoundedCornerShape(16.dp))
@@ -70,7 +74,11 @@ import org.koin.androidx.compose.koinViewModel
                                  ),
                                  shape = RoundedCornerShape(16.dp),
                              )
-                             .background(color = Color(0xffffffff)),
+                             .background(color = Color(0xffffffff)) .onFocusChanged {
+                                 focusState ->
+                                 if (focusState.isFocused)
+                                    viewModel.navigateSearchScreen()
+                                 },
                          singleLine = true,
                      )
                  }
@@ -80,13 +88,13 @@ import org.koin.androidx.compose.koinViewModel
 
      when (val state = viewModel.homePageState) {
          is HomePageState.Loading -> {
-             Loading(viewModel, paddingValues)
+             LoadingHomePage(viewModel, paddingValues)
          }
          is HomePageState.Loaded -> {
-             Loaded(viewModel, paddingValues )
+             LoadedHomePage(viewModel, paddingValues )
          }
          is HomePageState.Error -> {
-          Error(viewModel, paddingValues)
+          ErrorHomePage(viewModel, paddingValues)
          }
      }
      }

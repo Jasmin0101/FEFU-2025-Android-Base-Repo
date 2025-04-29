@@ -13,7 +13,10 @@ import co.feip.fefu2025.domain.model.Repository
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.navigation.Destination
 import co.feip.fefu2025.navigation.Navigator
+import co.feip.fefu2025.presentation.ui.pages.SearchScreenPage
 import co.feip.fefu2025.presentation.ui.states.home_page.HomePageState
+import co.feip.fefu2025.presentation.ui.states.home_page.MyStarsStatePage
+import co.feip.fefu2025.presentation.ui.states.search_page.SearchScreenPageState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -25,10 +28,16 @@ class  RepositoriesViewModel(
 
     private val _repositories = mutableStateOf<List<Repository>>(emptyList())
     val repositories: State<List<Repository>> = _repositories
+
     var homePageState by mutableStateOf<HomePageState>(HomePageState.Loading)
         private set
-    private val _searchResults = mutableStateOf<List<Repository>>(emptyList())
+    var searchScreenPageState by mutableStateOf<SearchScreenPageState>(SearchScreenPageState.Loading)
+        private set
+    var myStarsPageState by mutableStateOf<MyStarsStatePage>(MyStarsStatePage.Loading)
+        private set
 
+    private val _searchResults = mutableStateOf<List<Repository>>(emptyList())
+    val searchResults: State<List<Repository>> = _searchResults
     var isSearching by mutableStateOf(false)
         private set
 
@@ -40,10 +49,10 @@ class  RepositoriesViewModel(
     fun searchRepositories(query: String) {
         viewModelScope.launch {
             isSearching = true
+            delay(500)
 
-            delay(300) // Чтобы не реагировать на каждый символ моментально
-
-            if (query.isBlank()) {
+            val trimmedQuery = query.trim()
+            if (trimmedQuery.isBlank()) {
                 _searchResults.value = emptyList()
                 isSearching = false
                 return@launch
@@ -51,7 +60,7 @@ class  RepositoriesViewModel(
 
             val allRepositories = repositories.value
             _searchResults.value = allRepositories.filter {
-                it.repositoryName.contains(query, ignoreCase = true)
+                it.repositoryName.contains(trimmedQuery, ignoreCase = true)
             }
 
             isSearching = false
@@ -65,16 +74,21 @@ class  RepositoriesViewModel(
                 if (Random.nextBoolean()) {
                     _repositories.value = getRepositoriesUseCase.execute()
                     homePageState = HomePageState.Loaded
+                    myStarsPageState = MyStarsStatePage.Loaded
                 } else {
                     throw Exception("Random error occurred")
                 }
             } catch (e: Exception) {
                 homePageState = HomePageState.Error
+                myStarsPageState = MyStarsStatePage.Error
             }
         }
     }
 
+
     fun retry() {
+
+        myStarsPageState = MyStarsStatePage.Loading
         homePageState = HomePageState.Loading
         loadRepositories()
     }
@@ -97,6 +111,14 @@ class  RepositoriesViewModel(
         viewModelScope.launch {
             navigator.navigate(
                 destination = Destination.HomePage
+            )
+        }
+    }
+
+    fun navigateSearchScreen(){
+        viewModelScope.launch {
+            navigator.navigate(
+                destination = Destination.SearchScreenPage
             )
         }
     }

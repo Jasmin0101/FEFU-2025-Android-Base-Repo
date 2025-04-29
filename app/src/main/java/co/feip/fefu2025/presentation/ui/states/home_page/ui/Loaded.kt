@@ -52,7 +52,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Loaded(
+fun LoadedHomePage(
     viewModel: RepositoriesViewModel = koinViewModel(),
     paddingValues: PaddingValues,
     modifier: Modifier =Modifier
@@ -125,7 +125,7 @@ fun Loaded(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                items(repositories.take(10)) { repo ->
+                items(repositories.take(repositories.size)) { repo ->
 
                     GitLabCard(
                         repositoryName = repo.repositoryName,

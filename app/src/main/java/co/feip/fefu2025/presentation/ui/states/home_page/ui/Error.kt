@@ -46,7 +46,7 @@ import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun Error(viewModel: RepositoriesViewModel = koinViewModel(),
+fun ErrorHomePage(viewModel: RepositoriesViewModel = koinViewModel(),
           paddingValues: PaddingValues,
 
           modifier: Modifier = Modifier
