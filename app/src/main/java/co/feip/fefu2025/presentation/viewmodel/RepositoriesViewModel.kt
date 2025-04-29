@@ -1,21 +1,17 @@
 package co.feip.fefu2025.presentation.viewmodel
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import co.feip.fefu2025.domain.model.Repository
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.navigation.Destination
 import co.feip.fefu2025.navigation.Navigator
-import co.feip.fefu2025.presentation.ui.pages.SearchScreenPage
 import co.feip.fefu2025.presentation.ui.states.home_page.HomePageState
-import co.feip.fefu2025.presentation.ui.states.home_page.MyStarsStatePage
+import co.feip.fefu2025.presentation.ui.states.home_page.MyStarsStatesPage
 import co.feip.fefu2025.presentation.ui.states.search_page.SearchScreenPageState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,12 +24,13 @@ class  RepositoriesViewModel(
 
     private val _repositories = mutableStateOf<List<Repository>>(emptyList())
     val repositories: State<List<Repository>> = _repositories
+    var  allRepositories : List<Repository> = emptyList();
 
     var homePageState by mutableStateOf<HomePageState>(HomePageState.Loading)
         private set
     var searchScreenPageState by mutableStateOf<SearchScreenPageState>(SearchScreenPageState.Loading)
         private set
-    var myStarsPageState by mutableStateOf<MyStarsStatePage>(MyStarsStatePage.Loading)
+    var myStarsPageState by mutableStateOf<MyStarsStatesPage>(MyStarsStatesPage.Loading)
         private set
 
     private val _searchResults = mutableStateOf<List<Repository>>(emptyList())
@@ -43,6 +40,9 @@ class  RepositoriesViewModel(
 
     init {
         loadRepositories()
+        viewModelScope.launch {
+            allRepositories = getRepositoriesUseCase.execute()
+        }
     }
 
 
@@ -58,7 +58,6 @@ class  RepositoriesViewModel(
                 return@launch
             }
 
-            val allRepositories = repositories.value
             _searchResults.value = allRepositories.filter {
                 it.repositoryName.contains(trimmedQuery, ignoreCase = true)
             }
@@ -74,13 +73,13 @@ class  RepositoriesViewModel(
                 if (Random.nextBoolean()) {
                     _repositories.value = getRepositoriesUseCase.execute()
                     homePageState = HomePageState.Loaded
-                    myStarsPageState = MyStarsStatePage.Loaded
+                    myStarsPageState = MyStarsStatesPage.Loaded
                 } else {
                     throw Exception("Random error occurred")
                 }
             } catch (e: Exception) {
                 homePageState = HomePageState.Error
-                myStarsPageState = MyStarsStatePage.Error
+                myStarsPageState = MyStarsStatesPage.Error
             }
         }
     }
@@ -88,7 +87,7 @@ class  RepositoriesViewModel(
 
     fun retry() {
 
-        myStarsPageState = MyStarsStatePage.Loading
+        myStarsPageState = MyStarsStatesPage.Loading
         homePageState = HomePageState.Loading
         loadRepositories()
     }

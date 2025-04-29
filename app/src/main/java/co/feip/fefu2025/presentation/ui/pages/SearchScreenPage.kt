@@ -64,7 +64,7 @@ fun SearchScreenPage(viewModel: RepositoriesViewModel = koinViewModel()) {
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = {
-                            searchQuery = it
+                         searchQuery = it
                             viewModel.searchRepositories(it)
                         },
                         placeholder = { Text("Search...") },
