@@ -1,5 +1,7 @@
 package co.feip.fefu2025.presentation.ui.states.my_stars.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,9 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -21,6 +26,7 @@ import co.feip.fefu2025.presentation.ui.features.gitlabui.ui.GitLabCard
 import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun LoadedMyStarsPage(
     viewModel: RepositoriesViewModel = koinViewModel(),
@@ -29,7 +35,21 @@ fun LoadedMyStarsPage(
 ){
     val repositories by viewModel.repositories
 
+    val listState = rememberLazyListState()
+    val visibleItems = viewModel.starredRepositories // <- используем не allRepositories
 
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastVisibleItemIndex ->
+                if (lastVisibleItemIndex != null &&
+                    lastVisibleItemIndex >= visibleItems.size - 5 &&
+                    !viewModel.isLoading
+                ) {
+                    viewModel.loadNextStarredPage()
+                }
+            }
+    }
     Column(
         modifier =
         Modifier
@@ -46,6 +66,7 @@ fun LoadedMyStarsPage(
         )
 
         LazyColumn(
+            state = listState,
             modifier =
             Modifier
                 .fillMaxWidth()
@@ -60,7 +81,7 @@ fun LoadedMyStarsPage(
 
                 GitLabCard(
                     repositoryName = repo.repositoryName,
-                    description = repo.description,
+                    description = repo.description ?: " ",
 
                     stars = repo.stars,
                     forks = repo.forks,

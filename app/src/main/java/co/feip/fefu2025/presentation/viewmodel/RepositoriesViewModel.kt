@@ -1,5 +1,8 @@
 package co.feip.fefu2025.presentation.viewmodel
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+@RequiresApi(Build.VERSION_CODES.O)
 class  RepositoriesViewModel(
     private val getRepositoriesUseCase: GetRepositoriesUseCase,
     private val navigator: Navigator
@@ -25,6 +29,7 @@ class  RepositoriesViewModel(
     private val _repositories = mutableStateOf<List<Repository>>(emptyList())
     val repositories: State<List<Repository>> = _repositories
     var  allRepositories : List<Repository> = emptyList();
+    var starredRepositories  : List<Repository> = emptyList();
 
     var homePageState by mutableStateOf<HomePageState>(HomePageState.Loading)
         private set
@@ -38,10 +43,66 @@ class  RepositoriesViewModel(
     var isSearching by mutableStateOf(false)
         private set
 
+    var isLoading by mutableStateOf(false)
+    private var currentPage = 1
+    private var currentStarPage = 1
+    private val perPage = 20
+
+
     init {
         loadRepositories()
+
+    }
+
+    fun loadStartRepositories ()  {
         viewModelScope.launch {
-            allRepositories = getRepositoriesUseCase.execute()
+            try {
+                starredRepositories = getRepositoriesUseCase.executeStarred(1 , 10)
+
+            } catch (e: Exception) {
+
+            }
+        }
+
+    }
+
+    fun loadNextPage() {
+        if (isLoading) return
+        isLoading = true
+
+        viewModelScope.launch {
+            try {
+                val nextPage = getRepositoriesUseCase.execute(page = currentPage, perPage = perPage)
+                _repositories.value += nextPage
+                allRepositories = allRepositories + nextPage
+                currentPage++
+                Log.d("page", currentPage.toString())
+
+            } catch (e: Exception) {
+
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
+    fun loadNextStarredPage() {
+        if (isLoading) return
+        isLoading = true
+
+        viewModelScope.launch {
+            try {
+                val nextPage = getRepositoriesUseCase.executeStarred(page = currentStarPage, perPage = 10)
+                _repositories.value += nextPage
+                allRepositories = allRepositories + nextPage
+                currentStarPage++
+                Log.d("page", currentStarPage.toString())
+
+            } catch (e: Exception) {
+
+            } finally {
+                isLoading = false
+            }
         }
     }
 
@@ -66,23 +127,17 @@ class  RepositoriesViewModel(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadRepositories() {
-        viewModelScope.launch {
-            try {
+        currentPage = 1
+        _repositories.value = emptyList()
+        allRepositories = emptyList()
+        loadNextPage()
 
-                if (Random.nextBoolean()) {
-                    _repositories.value = getRepositoriesUseCase.execute()
-                    homePageState = HomePageState.Loaded
-                    myStarsPageState = MyStarsStatesPage.Loaded
-                } else {
-                    throw Exception("Random error occurred")
-                }
-            } catch (e: Exception) {
-                homePageState = HomePageState.Error
-                myStarsPageState = MyStarsStatesPage.Error
-            }
-        }
+        homePageState = HomePageState.Loaded
+        myStarsPageState = MyStarsStatesPage.Loaded
     }
+
 
 
     fun retry() {

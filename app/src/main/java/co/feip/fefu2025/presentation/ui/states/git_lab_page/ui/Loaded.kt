@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.feip.fefu2025.presentation.ui.pages.CustomFlexBoxScreen
 import co.feip.fefu2025.presentation.viewmodel.RepositoryViewModel
+import coil.compose.AsyncImage
 import org.koin.androidx.compose.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -59,21 +63,16 @@ fun LoadedGitLabState(
                 .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), shape = MaterialTheme.shapes.medium)
                 .padding(16.dp),
         ) {
-            repository?.avatarRes?.let {
-                Image(
-                    painter = painterResource(id = it),
-                    contentDescription = "Avatar",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape).border(
-                            width = 4.dp,
-                            brush = Brush.linearGradient(
-                                colors = listOf(Color(0xffbf02b3), Color(0xffd18006))
-                            ),
-                            shape = RoundedCornerShape(70.dp)
-                        ),
-                )
+            repository?.avatarUrl?.let {
+
+                    AsyncImage(
+                        model = it ,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "Project Avatar",
+                        modifier = Modifier.size(48.dp).clip(CircleShape),
+//                    contentScale = ContentScale.Crop,
+                    )
+
                 Spacer(modifier = Modifier.width(12.dp))
             }
 
@@ -89,7 +88,7 @@ fun LoadedGitLabState(
 
         repository?.let {
             Text(
-                text = it.description,
+                text = it.description ?: " ",
                 fontSize = 16.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(top = 8.dp),

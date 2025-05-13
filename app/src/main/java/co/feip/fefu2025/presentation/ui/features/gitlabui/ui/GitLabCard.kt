@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.feip.fefu2025.R
+import coil.compose.AsyncImage
 
 @Composable
 fun GitLabCard(
@@ -28,6 +29,7 @@ fun GitLabCard(
     stars: Int,
     forks: Int,
     avatarRes: Int? = null,
+    avatarUrl : String? = null,
     modifier : Modifier = Modifier,
     onCardClick: () -> Unit
 ) {
@@ -41,14 +43,15 @@ fun GitLabCard(
 
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
-            if (avatarRes == null) {
+            if (avatarUrl == null) {
                 Icon(imageVector = Icons.Outlined.Home, contentDescription = "Home Icon", modifier = Modifier.size(48.dp))
             } else {
-                Image(
-                    painter = painterResource(id = avatarRes),
+                AsyncImage(
+                    model = avatarUrl ,
+                    contentScale = ContentScale.Crop,
                     contentDescription = "Project Avatar",
                     modifier = Modifier.size(48.dp).clip(CircleShape),
-                    contentScale = ContentScale.Crop,
+//                    contentScale = ContentScale.Crop,
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
@@ -82,7 +85,6 @@ private fun PreviewGitLabCard( modifier : Modifier = Modifier,) {
         description = "This is a sample GitLab repository.",
         stars = 42,
         forks = 10,
-        avatarRes = R.drawable.cruto,
         onCardClick = {}
     )
 }

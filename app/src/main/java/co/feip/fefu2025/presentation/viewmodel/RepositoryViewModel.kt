@@ -34,12 +34,10 @@ class RepositoryViewModel(
         viewModelScope.launch {
             try {
 
-                if (Random.nextBoolean()) {
+
                     _repository.value = getRepositoryUseCase.execute(id)
                     gitLabPageState = GitLabPageState.Loaded
-                } else {
-                    throw Exception("Random error occurred")
-                }
+
             } catch (e: Exception) {
 
                 gitLabPageState = GitLabPageState.Error

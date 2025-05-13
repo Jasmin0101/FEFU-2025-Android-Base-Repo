@@ -9,5 +9,10 @@ class GetRepositoriesUseCase(
     private val repository: RepositoryRepository
 ) {
 
-    suspend fun execute(): List<Repository> = repository.getAllRepositories()
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun execute(page: Int = 1, perPage: Int = 20): List<Repository> = repository.getAllRepositories(page)
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun executeStarred(page: Int = 1, perPage: Int = 20): List<Repository> = repository.getAllStarredRepositories(page , perPage)
+
 }
