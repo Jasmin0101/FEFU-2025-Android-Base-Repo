@@ -1,4 +1,4 @@
-package co.feip.fefu2025.presentation.ui.features.gitlabui.ui
+package co.feip.fefu2025.presentation.ui.features.ui.gitlab
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

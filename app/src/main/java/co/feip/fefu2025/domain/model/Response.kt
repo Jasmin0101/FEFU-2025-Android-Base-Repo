@@ -1,13 +1,9 @@
 import android.os.Build
 import androidx.annotation.RequiresApi
-import co.feip.fefu2025.domain.model.Repository
-import java.text.SimpleDateFormat
+import co.feip.fefu2025.domain.model.RepositoryModel
 import java.time.LocalDate
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
 
-data class GitLabProject(
+data class RepositoryResponse(
     val id: Int,
     val name: String,
     val description: String?,
@@ -21,9 +17,9 @@ data class GitLabProject(
     )
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun GitLabProject.toRepository(languages: Map<String,Float> = emptyMap() ): Repository {
+fun RepositoryResponse.toRepository(languages: Map<String,Float> = emptyMap() ): RepositoryModel {
 
-    return Repository(
+    return RepositoryModel(
         id = id ,
         repositoryName = name,
         description = description ,

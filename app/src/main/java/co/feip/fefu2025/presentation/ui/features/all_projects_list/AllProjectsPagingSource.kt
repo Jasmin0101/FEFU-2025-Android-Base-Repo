@@ -1,0 +1,52 @@
+package co.feip.fefu2025.presentation.ui.features.all_projects_list
+
+
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import co.feip.fefu2025.domain.model.RepositoryModel
+import kotlin.math.max
+
+
+class AllProjectsPagingSource : PagingSource<Int, RepositoryModel>() {
+    private var STARTING_KEY = 1
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RepositoryModel> {
+
+        // Start paging with the STARTING_KEY if this is the first load
+        val start = params.key ?: STARTING_KEY
+        // Load as many items as hinted by params.loadSize
+        val range = start.until(start + params.loadSize)
+
+        return LoadResult.Page(
+            data = range.map { number ->
+                RepositoryModel(
+                    id = number,
+                    description = "This describes article $number",
+                    repositoryName = TODO(),
+                    stars = TODO(),
+                    forks = TODO(),
+                    avatarRes = TODO(),
+                    avatarUrl = TODO(),
+                    isMyRepo = TODO(),
+                    languages = TODO(),
+                    date = TODO(),
+                )
+            },
+
+            // Make sure we don't try to load items behind the STARTING_KEY
+            prevKey = when (start) {
+                STARTING_KEY -> null
+                else -> ensureValidKey(key = range.first - params.loadSize)
+            },
+            nextKey = range.last + 1
+        )
+
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, RepositoryModel>): Int? {
+        val anchorPosition = state.anchorPosition ?: return null
+        val article = state.closestItemToPosition(anchorPosition) ?: return null
+        return ensureValidKey(key = article.id - (state.config.pageSize / 2))
+    }
+
+    private fun ensureValidKey(key: Int) = max(STARTING_KEY, key)
+}

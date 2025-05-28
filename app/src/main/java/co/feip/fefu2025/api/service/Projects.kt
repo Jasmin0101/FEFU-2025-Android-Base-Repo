@@ -9,12 +9,12 @@ interface GitLabApiService {
         @Query("per_page") perPage: Int = 20,
         @Query("search") search: String? = null,
         @Query("starred") starred : Boolean? = null,
-    ): List<GitLabProject>
+    ): List<RepositoryResponse>
 
     @GET("projects/{id}")
     suspend fun getProjectById(
         @Path("id") id: Int
-    ): GitLabProject
+    ): RepositoryResponse
 
     @GET("projects/{id}/languages")
     suspend fun  getLanguages(

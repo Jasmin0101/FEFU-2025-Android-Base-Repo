@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import co.feip.fefu2025.presentation.ui.features.gitlabui.ui.ShimmerGitLabCard
+import co.feip.fefu2025.presentation.ui.features.ui.gitlab.ShimmerGitLabCard
 
 @Composable
 fun LoadingSearchScreen(modifier: Modifier=Modifier){

@@ -17,14 +17,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -72,6 +72,23 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-
     implementation(libs.coil.compose)
+
+    implementation(libs.androidx.paging.runtime.ktx)
+
+    // alternatively - without Android dependencies for tests
+    testImplementation(libs.androidx.paging.common)
+
+    // optional - RxJava2 support
+    implementation(libs.androidx.paging.rxjava2)
+
+    // optional - RxJava3 support
+    implementation(libs.androidx.paging.rxjava3)
+
+    // optional - Guava ListenableFuture support
+    implementation(libs.androidx.paging.guava)
+
+    // optional - Jetpack Compose integration
+    implementation(libs.androidx.paging.compose)
+
 }

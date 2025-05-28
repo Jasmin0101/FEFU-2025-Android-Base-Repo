@@ -1,6 +1,5 @@
-package co.feip.fefu2025.presentation.ui.features.gitlabui.ui
+package co.feip.fefu2025.presentation.ui.features.ui.gitlab
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -14,12 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import co.feip.fefu2025.R
 import coil.compose.AsyncImage
 
 @Composable
@@ -35,7 +32,7 @@ fun GitLabCard(
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.fillMaxWidth().clickable { onCardClick() }, // Обработчик нажатияs,
+        modifier = Modifier.fillMaxWidth().height(96.dp).clickable { onCardClick() }, // Обработчик нажатияs,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xffeee6f6)
@@ -58,11 +55,13 @@ fun GitLabCard(
             Column {
                 Text(
                     text = repositoryName,
+                    maxLines = 1,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     text = description,
+                    maxLines = 1,
                     fontSize = 14.sp,
                     color = Color.Gray,
                     modifier = Modifier.padding(top = 4.dp),
