@@ -2,6 +2,9 @@ package co.feip.fefu2025.presentation.ui.pages
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,32 +23,25 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyStarsPage(
-    viewModel: HomePageViewModel = koinViewModel(),
-    modifier: Modifier = Modifier
+    viewModel: HomePageViewModel = koinViewModel(), modifier: Modifier = Modifier
 ) {
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
+    Scaffold(topBar = {
+        TopAppBar(title = {
 
-                    GradientText("My Stars")
-                },
-                navigationIcon = {
-                    IconButton(onClick = { viewModel.navigateHome() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
+            GradientText("My Stars")
+        }, navigationIcon = {
+            IconButton(onClick = { viewModel.navigateHome() }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+        })
+    }) { paddingValues ->
 
 
         MyStarsList(
-            navigateHome = { viewModel.navigateHome() },
             navigateRepository = { id -> (viewModel.navigateRepository(id)) },
             paddingValues = paddingValues,
         )

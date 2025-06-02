@@ -10,28 +10,28 @@ import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import kotlin.math.max
 
 
-class AllProjectsPagingSource(private val getRepositoriesUseCase: GetRepositoriesUseCase) :
+class MyStarsPaginSource(private val getRepositoriesUseCase: GetRepositoriesUseCase) :
     PagingSource<Int, RepositoryModel>() {
     private var STARTING_KEY = 1
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RepositoryModel> {
-
         val page = params.key ?: STARTING_KEY
         val perPage = params.loadSize
 
-        val repositories = getRepositoriesUseCase.execute(page = page, perPage = perPage)
+        val repositories = getRepositoriesUseCase.executeStarred(page = page, perPage = perPage)
+
+        val nextKey = if (repositories.isEmpty()) {
+            null
+        } else {
+            page + 1
+        }
 
         return LoadResult.Page(
             data = repositories,
-            prevKey = when (page) {
-                STARTING_KEY -> null
-                else -> ensureValidKey(key = page - 1)
-            },
-
-            nextKey = page + 1
+            prevKey = if (page == STARTING_KEY) null else ensureValidKey(page - 1),
+            nextKey = nextKey
         )
-
     }
 
     override fun getRefreshKey(state: PagingState<Int, RepositoryModel>): Int? {

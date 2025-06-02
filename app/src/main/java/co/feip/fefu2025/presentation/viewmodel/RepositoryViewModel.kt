@@ -13,6 +13,9 @@ import co.feip.fefu2025.domain.usecase.GetRepositoryUseCase
 import co.feip.fefu2025.navigation.Destination
 import co.feip.fefu2025.navigation.Navigator
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.GitLabPageState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -25,6 +28,8 @@ class RepositoryViewModel(
     val repository: State<RepositoryModel?> = _repository
     var gitLabPageState by mutableStateOf<GitLabPageState>(GitLabPageState.Loading)
         private set
+    private val _favorites = MutableStateFlow<Set<Int>>(emptySet())
+    val favorites: StateFlow<Set<Int>> = _favorites
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadRepository(id: Int) {
 
@@ -49,7 +54,15 @@ class RepositoryViewModel(
         }
 
 
-        fun navigateHome() {
+    fun toggleFavorite(id: Int) {
+        _favorites.update { current ->
+            if (id in current) current - id else current + id
+        }
+    }
+
+
+
+    fun navigateHome() {
             viewModelScope.launch {
                 navigator.navigate(
                     destination = Destination.HomePage,

@@ -1,6 +1,3 @@
-package co.feip.fefu2025.presentation.ui.features.all_projects_list
-
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.paging.PagingSource
@@ -10,7 +7,10 @@ import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import kotlin.math.max
 
 
-class AllProjectsPagingSource(private val getRepositoriesUseCase: GetRepositoriesUseCase) :
+class SearchProjectPagingSource(
+    private val getRepositoriesUseCase: GetRepositoriesUseCase,
+    private val query: String
+) :
     PagingSource<Int, RepositoryModel>() {
     private var STARTING_KEY = 1
 
@@ -20,7 +20,7 @@ class AllProjectsPagingSource(private val getRepositoriesUseCase: GetRepositorie
         val page = params.key ?: STARTING_KEY
         val perPage = params.loadSize
 
-        val repositories = getRepositoriesUseCase.execute(page = page, perPage = perPage)
+        val repositories = getRepositoriesUseCase.executeSearch(page = page, perPage = perPage , search =  query)
 
         return LoadResult.Page(
             data = repositories,
@@ -28,7 +28,6 @@ class AllProjectsPagingSource(private val getRepositoriesUseCase: GetRepositorie
                 STARTING_KEY -> null
                 else -> ensureValidKey(key = page - 1)
             },
-
             nextKey = page + 1
         )
 

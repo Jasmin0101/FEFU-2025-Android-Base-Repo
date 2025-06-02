@@ -1,11 +1,16 @@
-package co.feip.fefu2025.presentation.ui.pages
+ package co.feip.fefu2025.presentation.ui.pages
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -16,54 +21,44 @@ import co.feip.fefu2025.presentation.ui.features.my_stars_preview.MyStarsPreview
 import co.feip.fefu2025.presentation.viewmodel.HomePageViewModel
 import org.koin.androidx.compose.koinViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun HomePage(viewModel: HomePageViewModel = koinViewModel()) {
-    Scaffold(
-        topBar = {
-            SearchBar(
-                value = "Search...",
-                onFocus = {
-                    viewModel.navigateSearchScreen()
-                },
-                readOnly = true
-            )
-        },
-    ) { paddingValues ->
+ @RequiresApi(Build.VERSION_CODES.O)
+ @Composable
+ fun HomePage(viewModel: HomePageViewModel = koinViewModel()) {
+     Scaffold(
+         topBar = {
+             Column(
+                 modifier = Modifier
+                     .windowInsetsPadding(WindowInsets.statusBars) // безопасный отступ сверху
+             ) {
+                 SearchBar(
+                     value = "Search...",
+                     onFocus = {
+                         viewModel.navigateSearchScreen()
+                     },
+                     readOnly = true
+                 )
+             }
+         },
+     ) { paddingValues ->
 
-        val listState = rememberLazyListState()
+         val listState = rememberLazyListState()
 
-        Column(
-            modifier = Modifier.padding(paddingValues),
-        ) {
-            Spacer(Modifier.height(16.dp))
+         Column(
+         ) {
+             Spacer(Modifier.height(paddingValues.calculateTopPadding()))
 
-            MyStarsPreview(
-                navigateMyStars = { viewModel.navigateMyStars() },
-                navigateRepository = { id -> viewModel.navigateRepository(id) }
-            )
+             MyStarsPreview(
+                 navigateMyStars = {viewModel.navigateMyStars()},
+                 navigateRepository = { id -> viewModel.navigateRepository(id) }
+             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+             Spacer(modifier = Modifier.height(24.dp))
 
-            AllProjectsList(
-                listState = listState,
-                navigateRepository = { id -> viewModel.navigateRepository(id) },
-            )
-        }
-    }
-}
-// @RequiresApi(Build.VERSION_CODES.O)
-// @Preview
-// @Composable
-// private fun PreviewHomePage() {
-//     HomePage(
-//         viewModel = RepositoriesViewModel(
-//             getRepositoriesUseCase = GetRepositoriesUseCase(
-//                 repository = RepositoryRepository()
-//             ),
-//             navigator = DefaultNavigator(
-//                 startDestination = Destination.BaseGraph
-//             )
-//         )
-//     )
-// }
+             AllProjectsList(
+                 listState = listState,
+                 navigateRepository = { id -> viewModel.navigateRepository(id)} ,
+                 paddingValues =  paddingValues,
+             )
+         }
+     }
+ }

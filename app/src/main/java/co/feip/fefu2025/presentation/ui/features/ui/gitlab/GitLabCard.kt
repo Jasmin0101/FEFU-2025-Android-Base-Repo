@@ -1,14 +1,13 @@
 package co.feip.fefu2025.presentation.ui.features.ui.gitlab
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -25,33 +24,54 @@ fun GitLabCard(
     description: String,
     stars: Int,
     forks: Int,
-    avatarRes: Int? = null,
-    avatarUrl : String? = null,
-    modifier : Modifier = Modifier,
+    avatarUrl: String? = null,
+    modifier: Modifier = Modifier,
     onCardClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.fillMaxWidth().height(96.dp).clickable { onCardClick() }, // Обработчик нажатияs,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(96.dp)
+            .clickable { onCardClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xffeee6f6)
         )
-
     ) {
-        Row(modifier = Modifier.padding(16.dp)) {
-            if (avatarUrl == null) {
-                Icon(imageVector = Icons.Outlined.Home, contentDescription = "Home Icon", modifier = Modifier.size(48.dp))
-            } else {
+        Row(
+            modifier = Modifier
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (avatarUrl != null) {
                 AsyncImage(
-                    model = avatarUrl ,
-                    contentScale = ContentScale.Crop,
+                    model = avatarUrl,
                     contentDescription = "Project Avatar",
-                    modifier = Modifier.size(48.dp).clip(CircleShape),
-//                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
                 )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(Color.Gray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = repositoryName.firstOrNull()?.uppercase() ?: "?",
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
+
             Spacer(modifier = Modifier.width(16.dp))
+
             Column {
                 Text(
                     text = repositoryName,
@@ -78,7 +98,7 @@ fun GitLabCard(
 
 @Preview
 @Composable
-private fun PreviewGitLabCard( modifier : Modifier = Modifier,) {
+private fun PreviewGitLabCard() {
     GitLabCard(
         repositoryName = "Sample Repo",
         description = "This is a sample GitLab repository.",

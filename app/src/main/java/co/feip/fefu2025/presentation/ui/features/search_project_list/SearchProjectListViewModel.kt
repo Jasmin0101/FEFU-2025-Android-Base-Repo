@@ -1,56 +1,49 @@
 package co.feip.fefu2025.presentation.ui.features.search_project_list
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
+import SearchProjectPagingSource
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import co.feip.fefu2025.domain.model.RepositoryModel
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.retry
 
-class SearchProjectListViewModel(private val getRepositoriesUseCase: GetRepositoriesUseCase) :
-    ViewModel() {
-
-    private val _repositories = mutableStateOf<List<RepositoryModel>>(emptyList())
-    val repositories: State<List<RepositoryModel>> = _repositories
-
-
-
-    var isLoading by mutableStateOf(false)
-    private var currentPage = 1
-    private var currentStarPage = 1
+class SearchProjectListViewModel(
+    private val getRepositoriesUseCase: GetRepositoriesUseCase
+) : ViewModel() {
     private val perPage = 20
+    private val _query = MutableStateFlow("")
+    val query = _query.asStateFlow()
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun searchRepositories(query: String) {
-        _repositories.value = emptyList()
-        currentPage = 1
-        loadNextPage(query)
+
+    fun searchRepositories(newQuery: String) {
+         _query.value = newQuery
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun loadNextPage(query: String) {
-        if (isLoading) return
-        isLoading = true
+//    val items: Flow<PagingData<RepositoryModel>> =
+//        Pager(
+//            config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
+//            pagingSourceFactory = { SearchProjectPagingSource(getRepositoriesUseCase, _query.value) }
+//        )
+//            .flow
+//            .cachedIn(viewModelScope)
 
-        viewModelScope.launch {
-            try {
-                val nextPage = getRepositoriesUseCase.executeSearch(page = currentPage, perPage = perPage, search =  query  )
-                _repositories.value += nextPage
-
-                currentPage++
-                Log.d("page", currentPage.toString())
-
-            } catch (e: Exception) {
-
-            } finally {
-                isLoading = false
-            }
+    val items: Flow<PagingData<RepositoryModel>> = _query
+        .flatMapLatest { query ->
+            Pager(
+                config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
+                pagingSourceFactory = { SearchProjectPagingSource(getRepositoriesUseCase, query) }
+            ).flow
         }
-    }
+        .cachedIn(viewModelScope)
+
+
 }

@@ -15,17 +15,27 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+    }
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
+    buildFeatures {
+        compose = true
+        viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
+        }
+        release {
+            buildConfigField("String", "GITLAB_API_TOKEN", "\"${properties["gitlabApiToken"]}\"")
+        }
+        debug {
+            buildConfigField("String", "GITLAB_API_TOKEN", "\"${properties["gitlabApiToken"]}\"")
         }
     }
     compileOptions {
@@ -38,6 +48,8 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig = true
+
     }
 }
 
@@ -90,5 +102,8 @@ dependencies {
 
     // optional - Jetpack Compose integration
     implementation(libs.androidx.paging.compose)
+
+    implementation(libs.okhttp3.logging.interceptor)
+
 
 }
