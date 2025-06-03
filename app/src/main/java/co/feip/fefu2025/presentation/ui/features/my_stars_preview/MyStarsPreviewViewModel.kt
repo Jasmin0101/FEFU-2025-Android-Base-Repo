@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.MyStarsPreviewStates
 
@@ -22,7 +23,7 @@ class MyStarsPreviewViewModel(
     suspend fun refresh() {
         state = MyStarsPreviewStates.Loading
         try {
-            val result = getRepositoriesUseCase.executeStarred(1, perPage)
+            val result = getRepositoriesUseCase.executeStarred(1, perPage, this.viewModelScope)
             state = if (result.isEmpty()) {
                 MyStarsPreviewStates.Empty
             } else {

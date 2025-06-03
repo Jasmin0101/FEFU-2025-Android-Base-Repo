@@ -26,6 +26,7 @@ fun MyStarsPreview(
     navigateRepository: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Заголовок/кнопка "My Stars"
     LaunchedEffect(Unit) {
         viewModel.refresh()
     }

@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import co.feip.fefu2025.presentation.viewmodel.HomePageViewModel
 import co.feip.fefu2025.presentation.viewmodel.RepositoryViewModel
 import co.feip.fefu2025.data.repository.RepositoryRepository
+import co.feip.fefu2025.data.repository.StarRepository
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
 import co.feip.fefu2025.domain.usecase.GetRepositoryUseCase
 import co.feip.fefu2025.navigation.DefaultNavigator
@@ -14,6 +15,7 @@ import co.feip.fefu2025.presentation.ui.features.all_projects_list.AllProjectsLi
 import co.feip.fefu2025.presentation.ui.features.my_stars_preview.MyStarsPreviewViewModel
 import co.feip.fefu2025.presentation.ui.features.search_project_list.SearchProjectListViewModel
 import co.feip.fefu2025.presentation.ui.features.my_stars_list.MyStarsListViewModel
+import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageViewModel
 
 
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -25,13 +27,10 @@ val navModule = module{
     }
 
     single { RepositoryRepository() }
+    single { StarRepository() }
 
-    factory { GetRepositoriesUseCase(get()) }
-    factory { GetRepositoryUseCase(get()) }
-    single { RepositoryRepository() }
-
-    factory { GetRepositoriesUseCase(get()) }
-    factory { GetRepositoryUseCase(get()) }
+    factory { GetRepositoriesUseCase(get() , get()) }
+    factory { GetRepositoryUseCase(get() , get()) }
 
 }
 
@@ -44,6 +43,7 @@ var viewModelModule = module{
     viewModelOf(::MyStarsPreviewViewModel)
     viewModelOf(::SearchProjectListViewModel)
     viewModelOf(::MyStarsListViewModel)
+    viewModelOf(::GitLabPageViewModel)
 }
 
 

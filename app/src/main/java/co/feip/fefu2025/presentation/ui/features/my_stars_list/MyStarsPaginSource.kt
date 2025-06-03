@@ -7,10 +7,13 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import co.feip.fefu2025.domain.model.RepositoryModel
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
+import co.feip.fefu2025.presentation.viewmodel.HomePageViewModel
+import kotlinx.coroutines.CoroutineScope
+import org.koin.androidx.compose.koinViewModel
 import kotlin.math.max
 
 
-class MyStarsPaginSource(private val getRepositoriesUseCase: GetRepositoriesUseCase) :
+class MyStarsPaginSource(private val getRepositoriesUseCase: GetRepositoriesUseCase, private var scope: CoroutineScope ) :
     PagingSource<Int, RepositoryModel>() {
     private var STARTING_KEY = 1
 
@@ -18,8 +21,7 @@ class MyStarsPaginSource(private val getRepositoriesUseCase: GetRepositoriesUseC
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RepositoryModel> {
         val page = params.key ?: STARTING_KEY
         val perPage = params.loadSize
-
-        val repositories = getRepositoriesUseCase.executeStarred(page = page, perPage = perPage)
+        val repositories = getRepositoriesUseCase.executeStarred(page = page, perPage = perPage, scope = scope)
 
         val nextKey = if (repositories.isEmpty()) {
             null

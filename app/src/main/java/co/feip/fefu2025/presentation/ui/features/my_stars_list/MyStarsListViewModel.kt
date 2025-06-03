@@ -2,6 +2,7 @@ package co.feip.fefu2025.presentation.ui.features.my_stars_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,13 +14,17 @@ import kotlinx.coroutines.flow.Flow
 
 class MyStarsListViewModel(
     private val getRepositoriesUseCase: GetRepositoriesUseCase,
+
 ) : ViewModel() {
     private val perPage = 20
 
 
     val items: Flow<PagingData<RepositoryModel>> = Pager(
         config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
-        pagingSourceFactory = { MyStarsPaginSource(getRepositoriesUseCase) }
+        pagingSourceFactory = { MyStarsPaginSource(
+            getRepositoriesUseCase,
+            scope = this.viewModelScope,
+        ) }
     )
         .flow
         .cachedIn(viewModelScope)

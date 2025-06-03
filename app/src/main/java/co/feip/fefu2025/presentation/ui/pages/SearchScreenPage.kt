@@ -1,7 +1,10 @@
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,12 +42,17 @@ fun SearchScreenPage(
 
     Scaffold(
         topBar = {
-            SearchBar(
-                value = searchQuery,
-                onChange = {
-                    searchQuery = it // только обновляем локальное состояние
-                }
-            )
+            Column(
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.statusBars) // безопасный отступ сверху
+            ) {
+                SearchBar(
+                    value = searchQuery,
+                    onChange = {
+                        searchQuery = it // только обновляем локальное состояние
+                    }
+                )
+            }
         },
     ) { paddingValues ->
 

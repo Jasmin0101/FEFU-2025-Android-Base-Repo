@@ -17,7 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -25,11 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import co.feip.fefu2025.presentation.custom.ProgrammingLanguageTag
-import co.feip.fefu2025.presentation.ui.states.git_lab_page.GitLabPageState
+import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageState
+import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageViewModel
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.ErrorGitLabState
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.LoadedGitLabState
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.LoadingGitLabState
-import co.feip.fefu2025.presentation.viewmodel.RepositoryViewModel
 import org.koin.androidx.compose.koinViewModel
 import views.FexBoxLayoutCustom
 import kotlin.random.Random
@@ -39,13 +39,28 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GitLabPage(
-    viewModel: RepositoryViewModel = koinViewModel(),
+    viewModel: GitLabPageViewModel = koinViewModel(),
     repositoryId: Int,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
 ) {
-    val repository by viewModel.repository
+    val repository = when (val state = viewModel.state) {
+        is GitLabPageState.Loading -> {
+            null
+        }
 
-    viewModel.loadRepository(repositoryId)
+        is GitLabPageState.Loaded -> {
+            state.repositoryModel
+        }
+
+        is GitLabPageState.Error -> {
+            null
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.refresh(repositoryId)
+    }
+
 
     Scaffold(
         topBar = {
@@ -66,7 +81,7 @@ fun GitLabPage(
     ) {
 
             paddingValues ->
-        when (val state = viewModel.gitLabPageState) {
+        when (val state = viewModel.state) {
             is GitLabPageState.Loading -> {
                 LoadingGitLabState(paddingValues)
             }
@@ -75,7 +90,11 @@ fun GitLabPage(
                 LoadedGitLabState(
                     repositoryId = repositoryId,
                     viewModel = viewModel,
-                    paddingValues = paddingValues
+                    paddingValues = paddingValues,
+                    repository = state.repositoryModel,
+                    isStared = state.isStared,
+
+                    modifier = Modifier,
                 )
             }
 

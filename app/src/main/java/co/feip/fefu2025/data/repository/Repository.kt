@@ -60,5 +60,23 @@ class RepositoryRepository {
             null
         }
     }
+    suspend fun starRepository(id: Int) {
+        try {
+            api.starProject(id)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+    }
+
+    // ✅ Добавлено
+    suspend fun unstarRepository(id: Int) {
+        try {
+            api.unstarProject(id)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
+        }
+    }
 
 }

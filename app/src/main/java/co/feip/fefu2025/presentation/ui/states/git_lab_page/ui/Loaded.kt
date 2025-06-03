@@ -3,15 +3,26 @@ package co.feip.fefu2025.presentation.ui.states.git_lab_page.ui
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.StarBorder
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,8 +31,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import co.feip.fefu2025.domain.model.RepositoryModel
+import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageViewModel
 import co.feip.fefu2025.presentation.ui.pages.CustomFlexBoxScreen
-import co.feip.fefu2025.presentation.viewmodel.RepositoryViewModel
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.koinViewModel
 
@@ -29,17 +41,16 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun LoadedGitLabState(
     paddingValues: PaddingValues,
-    viewModel: RepositoryViewModel = koinViewModel(),
+    viewModel: GitLabPageViewModel = koinViewModel(),
     repositoryId: Int,
+    repository: RepositoryModel,
+    isStared: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val repository by viewModel.repository
-    val favorites by viewModel.favorites.collectAsState() // 👈 наблюдаем избранные
 
-    viewModel.loadRepository(repositoryId)
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(paddingValues)
             .padding(16.dp)
             .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
@@ -109,9 +120,17 @@ fun LoadedGitLabState(
             )
 
             Row(modifier = Modifier.padding(top = 8.dp)) {
-                Text(text = "⭐ Stars: ${it.stars}", fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                Text(
+                    text = "⭐ Stars: ${it.stars}",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(text = "🔄 Forks: ${it.forks}", fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                Text(
+                    text = "🔄 Forks: ${it.forks}",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
             }
 
             it.languages.takeIf { langs -> langs.isNotEmpty() }?.let { languages ->
@@ -133,29 +152,32 @@ fun LoadedGitLabState(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            val isStarred = favorites.contains(it.id)
+            Button(
+                onClick = {
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                    viewModel.toggleStarred(repositoryId,repository , !isStared)
+                },
+                modifier = Modifier.fillMaxWidth()
             ) {
-                IconButton(onClick = { viewModel.toggleFavorite(it.id) }) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+
                     Icon(
-                        imageVector = if (isStarred) Icons.Filled.Star else Icons.Outlined.StarBorder,
-                        contentDescription = "Toggle Star",
-                        tint = if (isStarred) Color(0xFFFFC107) else Color.Gray
+                        imageVector = if (isStared) Icons.Default.Star else Icons.Default.StarBorder,
+                        contentDescription = if (isStared) "Unstar" else "Star",
+                        tint = if (isStared) Color.Yellow else Color.Gray
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = if (isStared) "Starred" else "Mark as Favorite",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
-
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = if (isStarred) "Starred" else "Mark as Favorite",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
             }
         }
     }
