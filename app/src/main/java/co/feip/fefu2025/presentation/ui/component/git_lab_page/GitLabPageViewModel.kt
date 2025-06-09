@@ -13,7 +13,6 @@ import co.feip.fefu2025.domain.usecase.GetRepositoryUseCase
 import co.feip.fefu2025.domain.usecase.GetToggleStarredUseCase
 import co.feip.fefu2025.presentation.navigation.Destination
 import co.feip.fefu2025.presentation.navigation.Navigator
-import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageState
 import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageState.Loaded
 import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageState.Loading
 import kotlinx.coroutines.launch
@@ -26,8 +25,15 @@ class GitLabPageViewModel(
 
 ) : ViewModel() {
 
+
     var state by mutableStateOf<GitLabPageState>(GitLabPageState.Loading)
         private set
+
+    fun navigateUp() {
+        viewModelScope.launch {
+            navigator.navigateUp()
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun refresh(id: Int) {
@@ -51,6 +57,7 @@ class GitLabPageViewModel(
             )
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun toggleStarred(id: Int, repositoryModel: RepositoryModel, isStarred: Boolean) {

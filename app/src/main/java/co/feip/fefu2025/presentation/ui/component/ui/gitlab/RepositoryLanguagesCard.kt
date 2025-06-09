@@ -32,12 +32,10 @@ import co.feip.fefu2025.R
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RepositoryLanguages(
-    languages: List<LanguageData>,
-    modifier: Modifier = Modifier
+    languages: List<LanguageData>, modifier: Modifier = Modifier
 ) {
     Column(
-        modifier =
-        modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
             .background(MaterialTheme.colorScheme.background),
@@ -52,8 +50,7 @@ fun RepositoryLanguages(
         Spacer(modifier = modifier.height(8.dp))
 
         Row(
-            modifier =
-            modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(12.dp)
                 .clip(RoundedCornerShape(6.dp))
@@ -61,8 +58,7 @@ fun RepositoryLanguages(
         ) {
             languages.forEach { lang ->
                 Box(
-                    modifier =
-                    modifier
+                    modifier = modifier
                         .weight(lang.percentage)
                         .fillMaxHeight()
                         .background(lang.color),
@@ -89,8 +85,7 @@ fun RepositoryLanguages(
 
 @Composable
 fun LanguageItem(
-    language: LanguageData,
-    modifier: Modifier = Modifier
+    language: LanguageData, modifier: Modifier = Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -121,15 +116,14 @@ data class LanguageData(
 @Preview
 @Composable
 private fun PreviewRepositoryLanguages(modifier: Modifier = Modifier) {
-    val languages =
-        listOf(
-            LanguageData("C++", 85.7f, Color(0xFFFF4081)),
-            LanguageData("C#", 3.5f, Color(0xFF4CAF50)),
-            LanguageData("Java", 3.1f, Color(0xFFFF9800)),
-            LanguageData("C", 2.3f, Color(0xFF616161)),
-            LanguageData("GLSL", 1.7f, Color(0xFF78909C)),
-            LanguageData("Objective-C++", 1.4f, Color(0xFF673AB7)),
-            LanguageData("Other", 2.3f, Color(0xFFA83A99)),
-        )
+    val languages = listOf(
+        LanguageData("C++", 85.7f, Color(0xFFFF4081)),
+        LanguageData("C#", 3.5f, Color(0xFF4CAF50)),
+        LanguageData("Java", 3.1f, Color(0xFFFF9800)),
+        LanguageData("C", 2.3f, Color(0xFF616161)),
+        LanguageData("GLSL", 1.7f, Color(0xFF78909C)),
+        LanguageData("Objective-C++", 1.4f, Color(0xFF673AB7)),
+        LanguageData("Other", 2.3f, Color(0xFFA83A99)),
+    )
     RepositoryLanguages(languages)
 }

@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.feip.fefu2025.domain.usecase.GetStarredRepositoriesUseCase
-import co.feip.fefu2025.presentation.ui.states.git_lab_page.MyStarsPreviewStates
+import co.feip.fefu2025.presentation.ui.component.my_stars_preview.states.MyStarsPreviewStates
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MyStarsPreviewViewModel(

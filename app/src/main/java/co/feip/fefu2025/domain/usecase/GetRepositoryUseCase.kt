@@ -2,7 +2,7 @@ package co.feip.fefu2025.domain.usecase
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import co.feip.fefu2025.data.repository.StarRepository
+import co.feip.fefu2025.domain.repository.StarRepository
 import co.feip.fefu2025.domain.model.RepositoryModel
 import co.feip.fefu2025.domain.repository.RepositoryRepository
 import kotlinx.coroutines.CoroutineScope

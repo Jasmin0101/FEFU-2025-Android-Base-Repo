@@ -4,7 +4,7 @@ package co.feip.fefu2025.di
 import android.os.Build
 import androidx.annotation.RequiresApi
 import co.feip.fefu2025.data.RepositoryRepositoryImpl
-import co.feip.fefu2025.data.repository.StarRepository
+import co.feip.fefu2025.domain.repository.StarRepository
 import co.feip.fefu2025.domain.repository.RepositoryRepository
 import co.feip.fefu2025.domain.usecase.GetIsStarredUseCase
 import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase

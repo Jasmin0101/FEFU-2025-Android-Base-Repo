@@ -1,4 +1,4 @@
-package co.feip.fefu2025.data.repository
+package co.feip.fefu2025.domain.repository
 
 import android.os.Build
 import androidx.annotation.RequiresApi

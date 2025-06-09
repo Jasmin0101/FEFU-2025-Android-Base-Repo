@@ -14,8 +14,7 @@ import kotlin.math.max
 class MyStarsPaginSource(
     private val getRepositoriesUseCase: GetStarredRepositoriesUseCase,
     private var scope: CoroutineScope
-) :
-    PagingSource<Int, RepositoryModel>() {
+) : PagingSource<Int, RepositoryModel>() {
     private var STARTING_KEY = 1
 
     @RequiresApi(Build.VERSION_CODES.O)

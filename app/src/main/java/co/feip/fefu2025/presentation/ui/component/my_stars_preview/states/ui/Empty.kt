@@ -1,4 +1,4 @@
-package co.feip.fefu2025.presentation.ui.features.my_stars_preview.states.ui
+package co.feip.fefu2025.presentation.ui.component.my_stars_preview.states.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,13 +19,14 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun Empty(
-    modifier: Modifier = Modifier,
-){
+
+) {
     Card(
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(96.dp).padding(start = 16.dp, end = 16.dp),
+            .height(96.dp)
+            .padding(start = 16.dp, end = 16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xffeee6f6)

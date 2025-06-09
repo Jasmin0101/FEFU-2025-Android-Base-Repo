@@ -1,4 +1,4 @@
-package co.feip.fefu2025.presentation.ui.features.my_stars_preview.states.ui
+package co.feip.fefu2025.presentation.ui.component.my_stars_preview.states.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,9 +31,7 @@ fun Loading(
         )
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
         }

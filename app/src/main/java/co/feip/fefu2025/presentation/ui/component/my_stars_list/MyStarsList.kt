@@ -76,15 +76,13 @@ fun MyStarsList(
             items(count = items.itemCount) { index ->
                 val repo = items[index]
                 repo?.let {
-                    GitLabCard(
-                        repositoryName = it.repositoryName,
+                    GitLabCard(repositoryName = it.repositoryName,
                         description = it.description ?: " ",
                         stars = it.stars,
                         forks = it.forks,
                         avatarUrl = it.avatarUrl,
                         modifier = modifier.padding(horizontal = 16.dp),
-                        onCardClick = { navigateRepository(it.id) }
-                    )
+                        onCardClick = { navigateRepository(it.id) })
                 }
             }
 
@@ -98,8 +96,7 @@ fun MyStarsList(
                 val e = items.loadState.append as LoadState.Error
                 item {
                     Text(
-                        text = "Ошибка: ${e.error.message}",
-                        modifier = modifier.padding(16.dp)
+                        text = "Ошибка: ${e.error.message}", modifier = modifier.padding(16.dp)
                     )
                 }
             }

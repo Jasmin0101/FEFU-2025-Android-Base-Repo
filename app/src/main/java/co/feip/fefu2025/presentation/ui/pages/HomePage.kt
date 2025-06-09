@@ -25,15 +25,12 @@ fun HomePage(viewModel: HomePageViewModel = koinViewModel(), modifier: Modifier 
     Scaffold(
         topBar = {
             Column(
-                modifier = modifier
-                    .windowInsetsPadding(WindowInsets.statusBars)
+                modifier = modifier.windowInsetsPadding(WindowInsets.statusBars)
             ) {
                 SearchBar(
-                    value = "Search...",
-                    onFocus = {
+                    value = "Search...", onFocus = {
                         viewModel.navigateSearchScreen()
-                    },
-                    readOnly = true
+                    }, readOnly = true
                 )
             }
         },
@@ -45,10 +42,8 @@ fun HomePage(viewModel: HomePageViewModel = koinViewModel(), modifier: Modifier 
         ) {
             Spacer(modifier.height(paddingValues.calculateTopPadding()))
 
-            MyStarsPreview(
-                navigateMyStars = { viewModel.navigateMyStars() },
-                navigateRepository = { id -> viewModel.navigateRepository(id) }
-            )
+            MyStarsPreview(navigateMyStars = { viewModel.navigateMyStars() },
+                navigateRepository = { id -> viewModel.navigateRepository(id) })
 
             Spacer(modifier = modifier.height(24.dp))
 

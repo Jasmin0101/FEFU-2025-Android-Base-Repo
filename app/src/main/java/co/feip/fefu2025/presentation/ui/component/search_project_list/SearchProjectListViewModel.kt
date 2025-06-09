@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 
 class SearchProjectListViewModel(
@@ -32,18 +31,16 @@ class SearchProjectListViewModel(
         .debounce(300)
         .distinctUntilChanged()
         .flatMapLatest { query ->
-            if (query.isBlank()) {
-                emptyFlow()
-            } else {
-                Pager(
-                    config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
-                    pagingSourceFactory = {
-                        SearchProjectPagingSource(getSearchRepositoriesUseCase, query)
-                    }
-                ).flow
-            }
+            Pager(
+                config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
+                pagingSourceFactory = {
+                    SearchProjectPagingSource(
+                        getSearchRepositoriesUseCase,
+                        query
+                    )
+                }
+            ).flow
         }
-
         .cachedIn(viewModelScope)
 
 

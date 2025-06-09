@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
 
                         GitLabPage(
                             repositoryId = args.id,
+                            navController = navController
                         )
                     }
 

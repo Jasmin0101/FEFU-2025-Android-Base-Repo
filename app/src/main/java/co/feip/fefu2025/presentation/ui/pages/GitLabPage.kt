@@ -19,9 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import co.feip.fefu2025.presentation.custom.ProgrammingLanguageTag
 import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageState
 import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageViewModel
@@ -39,8 +39,8 @@ import kotlin.random.Random
 fun GitLabPage(
     viewModel: GitLabPageViewModel = koinViewModel(),
     repositoryId: Int,
-
-    ) {
+    navController: NavController
+) {
     val repository = when (val state = viewModel.state) {
         is GitLabPageState.Loading -> {
             null
@@ -64,12 +64,13 @@ fun GitLabPage(
         TopAppBar(title = {
             repository?.let { Text(text = it.repositoryName) }
         }, navigationIcon = {
-            IconButton(onClick = { viewModel.navigateHome() }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back"
                 )
             }
+
         })
     }) {
 
@@ -128,15 +129,6 @@ fun CustomFlexBoxScreen(
     )
 }
 
-@ExperimentalMaterial3Api
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-private fun PreviewPage(modifier: Modifier = Modifier) {
-    GitLabPage(
-        repositoryId = 1
-    )
-}
 
 fun getRandomColor(): Color =
     Color(Random.nextInt(0, 256), Random.nextInt(0, 256), Random.nextInt(0, 256))

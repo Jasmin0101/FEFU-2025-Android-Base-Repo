@@ -2,7 +2,6 @@ package co.feip.fefu2025.presentation.viewmodel
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -22,7 +21,6 @@ class RepositoryViewModel(
 ) : ViewModel() {
 
     private val _repository = mutableStateOf<RepositoryModel?>(null)
-    val repository: State<RepositoryModel?> = _repository
     var gitLabPageState by mutableStateOf<GitLabPageState>(GitLabPageState.Loading)
         private set
 
@@ -35,7 +33,7 @@ class RepositoryViewModel(
 
 
                 _repository.value = getRepositoryUseCase.execute(id)
-                gitLabPageState = GitLabPageState.Loaded(_repository.value!! , false)
+                gitLabPageState = GitLabPageState.Loaded(_repository.value!!, false)
 
             } catch (e: Exception) {
 

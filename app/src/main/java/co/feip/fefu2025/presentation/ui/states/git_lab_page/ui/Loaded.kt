@@ -113,7 +113,9 @@ fun LoadedGitLabState(
             )
 
             Text(
-                text = "📅 Created: ${it.date.dayOfMonth.toString().padStart(2 , '0')}.${it.date.monthValue.toString().padStart(2 , '0')}.${it.date.year}",
+                text = "📅 Created: ${
+                    it.date.dayOfMonth.toString().padStart(2, '0')
+                }.${it.date.monthValue.toString().padStart(2, '0')}.${it.date.year}",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = modifier.padding(top = 4.dp),
@@ -121,15 +123,11 @@ fun LoadedGitLabState(
 
             Row(modifier = modifier.padding(top = 8.dp)) {
                 Text(
-                    text = "⭐ Stars: ${it.stars}",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
+                    text = "⭐ Stars: ${it.stars}", fontSize = 14.sp, fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = modifier.width(16.dp))
                 Text(
-                    text = "🔄 Forks: ${it.forks}",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
+                    text = "🔄 Forks: ${it.forks}", fontSize = 14.sp, fontWeight = FontWeight.Medium
                 )
             }
 
@@ -156,8 +154,7 @@ fun LoadedGitLabState(
                 onClick = {
 
                     viewModel.toggleStarred(repositoryId, repository, !isStared)
-                },
-                modifier = modifier.fillMaxWidth()
+                }, modifier = modifier.fillMaxWidth()
             ) {
                 Row(
                     modifier = modifier.fillMaxWidth(),
