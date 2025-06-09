@@ -11,6 +11,6 @@ data class RepositoryModel(
     val avatarRes: Int? = null,
     val avatarUrl: String? = null,
     val isMyRepo: Boolean? = false,
-    val languages:Map<String,Float> ,
+    val languages: Map<String, Float>,
     val date: LocalDate
 )

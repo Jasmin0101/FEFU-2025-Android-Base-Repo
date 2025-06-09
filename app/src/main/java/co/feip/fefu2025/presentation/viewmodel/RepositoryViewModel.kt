@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.feip.fefu2025.domain.model.RepositoryModel
 import co.feip.fefu2025.domain.usecase.GetRepositoryUseCase
-import co.feip.fefu2025.navigation.Destination
-import co.feip.fefu2025.navigation.Navigator
-import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageState
+import co.feip.fefu2025.presentation.navigation.Destination
+import co.feip.fefu2025.presentation.navigation.Navigator
+import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageState
 import kotlinx.coroutines.launch
 
 

@@ -1,3 +1,5 @@
+package co.feip.fefu2025.presentation.ui.pages
+
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -14,8 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import co.feip.fefu2025.presentation.ui.features.search_project_list.SearchProjectListViewModel
-import co.feip.fefu2025.presentation.ui.pages.SearchBar
+import co.feip.fefu2025.presentation.ui.component.search_project_list.SearchProjectList
+import co.feip.fefu2025.presentation.ui.component.search_project_list.SearchProjectListViewModel
+import co.feip.fefu2025.presentation.ui.component.ui.SearchBar
 import co.feip.fefu2025.presentation.viewmodel.HomePageViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
@@ -44,12 +47,12 @@ fun SearchScreenPage(
         topBar = {
             Column(
                 modifier = Modifier
-                    .windowInsetsPadding(WindowInsets.statusBars) // безопасный отступ сверху
+                    .windowInsetsPadding(WindowInsets.statusBars)
             ) {
                 SearchBar(
                     value = searchQuery,
                     onChange = {
-                        searchQuery = it // только обновляем локальное состояние
+                        searchQuery = it
                     }
                 )
             }

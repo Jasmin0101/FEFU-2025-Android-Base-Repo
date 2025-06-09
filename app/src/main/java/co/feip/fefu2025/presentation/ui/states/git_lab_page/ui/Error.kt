@@ -11,22 +11,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageViewModel
-import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ErrorGitLabState(
-    repositoryId: Int,
-    viewModel: GitLabPageViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val scope = rememberCoroutineScope()
+
 
     Column(
         modifier = modifier
@@ -37,9 +32,7 @@ fun ErrorGitLabState(
         Spacer(Modifier.height(50.dp))
         TextButton(
             onClick = {
-//                scope.launch {
-//                    viewModel.refresh(repositoryId)
-//                }
+
             },
             modifier = Modifier.padding(vertical = 8.dp),
         ) {

@@ -4,8 +4,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.feip.fefu2025.navigation.Destination
-import co.feip.fefu2025.navigation.Navigator
+import co.feip.fefu2025.presentation.navigation.Destination
+import co.feip.fefu2025.presentation.navigation.Navigator
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)

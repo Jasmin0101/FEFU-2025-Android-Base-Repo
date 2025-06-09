@@ -32,7 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.feip.fefu2025.domain.model.RepositoryModel
-import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageViewModel
+import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageViewModel
 import co.feip.fefu2025.presentation.ui.pages.CustomFlexBoxScreen
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.koinViewModel
@@ -58,7 +58,7 @@ fun LoadedGitLabState(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .background(
                     MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
@@ -71,13 +71,13 @@ fun LoadedGitLabState(
                     model = repository?.avatarUrl,
                     contentDescription = "Project Avatar",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
+                    modifier = modifier
                         .size(48.dp)
                         .clip(CircleShape)
                 )
             } else {
                 Box(
-                    modifier = Modifier
+                    modifier = modifier
                         .size(48.dp)
                         .clip(CircleShape)
                         .background(Color.Gray),
@@ -92,7 +92,7 @@ fun LoadedGitLabState(
                 }
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = modifier.width(12.dp))
 
             repository?.let {
                 Text(
@@ -109,23 +109,23 @@ fun LoadedGitLabState(
                 text = it.description ?: " ",
                 fontSize = 16.sp,
                 color = Color.Gray,
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = modifier.padding(top = 8.dp),
             )
 
             Text(
-                text = "📅 Created: ${it.date.dayOfMonth}.${it.date.monthValue}.${it.date.year}",
+                text = "📅 Created: ${it.date.dayOfMonth.toString().padStart(2 , '0')}.${it.date.monthValue.toString().padStart(2 , '0')}.${it.date.year}",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 4.dp),
+                modifier = modifier.padding(top = 4.dp),
             )
 
-            Row(modifier = Modifier.padding(top = 8.dp)) {
+            Row(modifier = modifier.padding(top = 8.dp)) {
                 Text(
                     text = "⭐ Stars: ${it.stars}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
                 )
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = modifier.width(16.dp))
                 Text(
                     text = "🔄 Forks: ${it.forks}",
                     fontSize = 14.sp,
@@ -135,7 +135,7 @@ fun LoadedGitLabState(
 
             it.languages.takeIf { langs -> langs.isNotEmpty() }?.let { languages ->
                 Column(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth()
                         .padding(top = 12.dp)
                         .background(
@@ -145,22 +145,22 @@ fun LoadedGitLabState(
                         .padding(16.dp),
                 ) {
                     Text(text = "Languages:", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = modifier.height(8.dp))
                     CustomFlexBoxScreen(languages.keys.toList())
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = modifier.height(16.dp))
 
             Button(
                 onClick = {
 
-                    viewModel.toggleStarred(repositoryId,repository , !isStared)
+                    viewModel.toggleStarred(repositoryId, repository, !isStared)
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifier.fillMaxWidth()
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -170,7 +170,7 @@ fun LoadedGitLabState(
                         contentDescription = if (isStared) "Unstar" else "Star",
                         tint = if (isStared) Color.Yellow else Color.Gray
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = modifier.width(8.dp))
                     Text(
                         text = if (isStared) "Starred" else "Mark as Favorite",
                         fontSize = 16.sp,

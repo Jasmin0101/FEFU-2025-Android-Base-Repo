@@ -1,6 +1,5 @@
 package co.feip.fefu2025.presentation.ui.pages
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -20,13 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import co.feip.fefu2025.presentation.custom.ProgrammingLanguageTag
-import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageState
-import co.feip.fefu2025.presentation.ui.features.git_lab_page.GitLabPageViewModel
+import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageState
+import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageViewModel
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.ErrorGitLabState
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.LoadedGitLabState
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.LoadingGitLabState
@@ -41,8 +39,8 @@ import kotlin.random.Random
 fun GitLabPage(
     viewModel: GitLabPageViewModel = koinViewModel(),
     repositoryId: Int,
-    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
-) {
+
+    ) {
     val repository = when (val state = viewModel.state) {
         is GitLabPageState.Loading -> {
             null
@@ -62,23 +60,18 @@ fun GitLabPage(
     }
 
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    repository?.let { Text(text = it.repositoryName) }
-                },
-                navigationIcon = {
-                    IconButton(onClick = { viewModel.navigateHome() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
-            )
-        }
-    ) {
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            repository?.let { Text(text = it.repositoryName) }
+        }, navigationIcon = {
+            IconButton(onClick = { viewModel.navigateHome() }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+        })
+    }) {
 
             paddingValues ->
         when (val state = viewModel.state) {
@@ -99,7 +92,7 @@ fun GitLabPage(
             }
 
             is GitLabPageState.Error -> {
-                ErrorGitLabState(repositoryId, viewModel)
+                ErrorGitLabState()
             }
         }
     }
@@ -110,7 +103,6 @@ fun CustomFlexBoxScreen(
     array: List<String>,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
 
     AndroidView(
         factory = { ctx ->
@@ -129,7 +121,7 @@ fun CustomFlexBoxScreen(
                 invalidate()
             }
         },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background, shape = MaterialTheme.shapes.medium)
             .padding(16.dp),

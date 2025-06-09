@@ -33,6 +33,7 @@ android {
         }
         release {
             buildConfigField("String", "GITLAB_API_TOKEN", "\"${properties["gitlabApiToken"]}\"")
+
         }
         debug {
             buildConfigField("String", "GITLAB_API_TOKEN", "\"${properties["gitlabApiToken"]}\"")

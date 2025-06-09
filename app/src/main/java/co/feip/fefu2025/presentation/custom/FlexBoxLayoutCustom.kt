@@ -8,8 +8,8 @@ class FexBoxLayoutCustom @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
 
-    private val horizontalSpacing = 10 // Горизонтальный отступ между элементами
-    private val verticalSpacing = 10   // Вертикальный отступ между строками
+    private val horizontalSpacing = 10
+    private val verticalSpacing = 10
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
@@ -35,7 +35,7 @@ class FexBoxLayoutCustom @JvmOverloads constructor(
             }
 
             if (currentWidth > 0) {
-                currentWidth += horizontalSpacing // Добавляем горизонтальный отступ
+                currentWidth += horizontalSpacing
             }
 
             currentWidth += child.measuredWidth
@@ -46,7 +46,8 @@ class FexBoxLayoutCustom @JvmOverloads constructor(
         totalHeight += currentHeight
 
         val finalWidth = if (widthMode == MeasureSpec.EXACTLY) widthSize else maxWidth
-        val finalHeight = if (heightMode == MeasureSpec.EXACTLY) MeasureSpec.getSize(heightMeasureSpec) else totalHeight
+        val finalHeight =
+            if (heightMode == MeasureSpec.EXACTLY) MeasureSpec.getSize(heightMeasureSpec) else totalHeight
 
         setMeasuredDimension(finalWidth, finalHeight)
     }
@@ -61,13 +62,13 @@ class FexBoxLayoutCustom @JvmOverloads constructor(
 
             if (x + child.measuredWidth > width) {
                 x = 0
-                y += rowHeight + verticalSpacing // Добавляем вертикальный отступ
+                y += rowHeight + verticalSpacing
                 rowHeight = 0
             }
 
             child.layout(x, y, x + child.measuredWidth, y + child.measuredHeight)
 
-            x += child.measuredWidth + horizontalSpacing // Добавляем горизонтальный отступ
+            x += child.measuredWidth + horizontalSpacing
             rowHeight = maxOf(rowHeight, child.measuredHeight)
         }
     }
