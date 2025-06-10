@@ -10,8 +10,7 @@ interface Navigator {
     val navigationAction: Flow<NavigationAction>
 
     suspend fun navigate(
-        destination: Destination,
-        navOptions: NavOptionsBuilder.() -> Unit = {}
+        destination: Destination, navOptions: NavOptionsBuilder.() -> Unit = {}
     )
 
     suspend fun navigateUp()
@@ -26,8 +25,7 @@ class DefaultNavigator(
     override val navigationAction = _navigationAction.receiveAsFlow()
 
     override suspend fun navigate(
-        destination: Destination,
-        navOptions: NavOptionsBuilder.() -> Unit
+        destination: Destination, navOptions: NavOptionsBuilder.() -> Unit
     ) {
         _navigationAction.send(
             NavigationAction.Navigate(

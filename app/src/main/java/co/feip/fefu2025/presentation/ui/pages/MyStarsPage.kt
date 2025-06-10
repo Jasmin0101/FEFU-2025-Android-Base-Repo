@@ -29,13 +29,11 @@ fun MyStarsPage(
         }, navigationIcon = {
             IconButton(onClick = { viewModel.navigateHome() }) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back"
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back"
                 )
             }
         })
     }) { paddingValues ->
-
 
         MyStarsList(
             navigateRepository = { id -> (viewModel.navigateRepository(id)) },

@@ -14,8 +14,7 @@ import co.feip.fefu2025.R
 
 
 class ProgrammingLanguageTag @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null
+    context: Context, attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
     private val circleView: View
     private val textView: TextView

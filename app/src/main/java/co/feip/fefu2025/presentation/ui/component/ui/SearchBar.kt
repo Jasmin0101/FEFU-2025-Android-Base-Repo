@@ -1,7 +1,5 @@
 package co.feip.fefu2025.presentation.ui.component.ui
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +20,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun SearchBar(
     value: String,
@@ -63,15 +61,13 @@ fun SearchBar(
                         shape = RoundedCornerShape(16.dp),
                     )
                     .background(color = Color(0xffffffff))
-                    .then(
-                        if (onFocus != null) {
-                            Modifier.onFocusChanged { focusState ->
-                                if (focusState.isFocused) onFocus()
-                            }
-                        } else {
-                            Modifier
+                    .then(if (onFocus != null) {
+                        Modifier.onFocusChanged { focusState ->
+                            if (focusState.isFocused) onFocus()
                         }
-                    ),
+                    } else {
+                        Modifier
+                    }),
                 singleLine = true,
             )
         }

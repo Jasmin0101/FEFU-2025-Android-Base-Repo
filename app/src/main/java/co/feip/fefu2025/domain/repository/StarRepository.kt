@@ -28,9 +28,7 @@ class StarRepository {
             while (true) {
                 try {
                     val gitlabProjects = api.getProjects(
-                        page = page,
-                        perPage = perPage,
-                        starred = true
+                        page = page, perPage = perPage, starred = true
                     )
 
                     if (gitlabProjects.isEmpty()) break
@@ -78,10 +76,7 @@ class StarRepository {
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun toggleStar(
-        id: Int,
-        repositoryModel: RepositoryModel,
-        isStarred: Boolean,
-        scope: CoroutineScope
+        id: Int, repositoryModel: RepositoryModel, isStarred: Boolean, scope: CoroutineScope
     ): Boolean {
         if (cachedRepositories == null) {
             cachedRepositories = _fetch(scope)

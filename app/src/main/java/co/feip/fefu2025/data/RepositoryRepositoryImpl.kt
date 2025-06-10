@@ -13,9 +13,7 @@ class RepositoryRepositoryImpl : RepositoryRepository {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getAllRepositories(
-        page: Int,
-        perPage: Int,
-        search: String?
+        page: Int, perPage: Int, search: String?
     ): List<RepositoryModel> {
         return try {
             api.getProjects(page, perPage, search).map { it.toRepository() }
@@ -27,8 +25,7 @@ class RepositoryRepositoryImpl : RepositoryRepository {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getAllStarredRepositories(
-        page: Int,
-        perPage: Int
+        page: Int, perPage: Int
     ): List<RepositoryModel> {
         return try {
             api.getProjects(page, perPage, starred = true).map { it.toRepository() }

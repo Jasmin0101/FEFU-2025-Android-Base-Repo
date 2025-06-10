@@ -34,9 +34,7 @@ fun MyStarsPreview(
         modifier = modifier.padding(vertical = 8.dp),
     ) {
         Text(
-            text = "My Stars",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            text = "My Stars", fontSize = 20.sp, fontWeight = FontWeight.Bold
         )
     }
 
@@ -55,11 +53,10 @@ fun MyStarsPreview(
 
         is MyStarsPreviewStates.Loaded -> {
             Loaded(
-                repositories = state.list,
-                navigateRepository = navigateRepository
+                repositories = state.list, navigateRepository = navigateRepository
             )
         }
 
-        else -> {}
+
     }
 }

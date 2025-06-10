@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.koin.androidx.compose.koinViewModel
 
+
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(FlowPreview::class)
 @Composable
@@ -38,9 +39,7 @@ fun SearchScreenPage(
     var searchQuery by remember { mutableStateOf(queryState) }
 
     LaunchedEffect(searchQuery) {
-        snapshotFlow { searchQuery }
-            .debounce(600)
-            .distinctUntilChanged()
+        snapshotFlow { searchQuery }.debounce(600).distinctUntilChanged()
             .collect { debouncedQuery ->
                 searchViewModel.searchRepositories(debouncedQuery)
             }
@@ -55,15 +54,11 @@ fun SearchScreenPage(
     Scaffold(
         topBar = {
             Column(
-                modifier = Modifier
-                    .windowInsetsPadding(WindowInsets.statusBars)
+                modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
             ) {
-                SearchBar(
-                    value = searchQuery,
-                    onChange = {
-                        searchQuery = it
-                    }
-                )
+                SearchBar(value = searchQuery, onChange = {
+                    searchQuery = it
+                })
             }
         },
     ) { paddingValues ->

@@ -50,9 +50,7 @@ fun GitLabCard(
         )
     ) {
         Row(
-            modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
         ) {
             if (avatarUrl != null) {
                 AsyncImage(
@@ -109,11 +107,9 @@ fun GitLabCard(
 @Preview
 @Composable
 private fun PreviewGitLabCard() {
-    GitLabCard(
-        repositoryName = "Sample Repo",
+    GitLabCard(repositoryName = "Sample Repo",
         description = "This is a sample GitLab repository.",
         stars = 42,
         forks = 10,
-        onCardClick = {}
-    )
+        onCardClick = {})
 }

@@ -23,8 +23,7 @@ class AllProjectsPagingSource(private val getRepositoriesUseCase: GetRepositorie
         val repositories = getRepositoriesUseCase.execute(page = page, perPage = perPage)
 
         return LoadResult.Page(
-            data = repositories,
-            prevKey = when (page) {
+            data = repositories, prevKey = when (page) {
                 STARTING_KEY -> null
                 else -> ensureValidKey(key = page - 1)
             },

@@ -20,23 +20,17 @@ object GitLabApiClient {
         }
         val authInterceptor = Interceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
-                .addHeader("PRIVATE-TOKEN", BuildConfig.GITLAB_API_TOKEN)
-                .build()
+                .addHeader("PRIVATE-TOKEN", BuildConfig.GITLAB_API_TOKEN).build()
             chain.proceed(newRequest)
         }
 
-        return OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .addInterceptor(authInterceptor)
+        return OkHttpClient.Builder().addInterceptor(logging).addInterceptor(authInterceptor)
             .build()
     }
 
     val apiService: GitLabApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(provideOkHttpClient())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        Retrofit.Builder().baseUrl(BASE_URL).client(provideOkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create()).build()
             .create(GitLabApiService::class.java)
     }
 }

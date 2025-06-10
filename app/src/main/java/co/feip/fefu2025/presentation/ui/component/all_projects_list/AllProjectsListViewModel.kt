@@ -18,11 +18,10 @@ class AllProjectsListViewModel(
 ) : ViewModel() {
     private val perPage = 20
 
-    val items: Flow<PagingData<RepositoryModel>> = Pager(
-        config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
-        pagingSourceFactory = { AllProjectsPagingSource(getRepositoriesUseCase) }
-    )
-        .flow
-        .cachedIn(viewModelScope)
+    val items: Flow<PagingData<RepositoryModel>> =
+        Pager(config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
+            pagingSourceFactory = { AllProjectsPagingSource(getRepositoriesUseCase) }).flow.cachedIn(
+                viewModelScope
+            )
 
 }

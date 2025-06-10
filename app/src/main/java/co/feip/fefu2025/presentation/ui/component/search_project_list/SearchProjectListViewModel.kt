@@ -35,19 +35,14 @@ class SearchProjectListViewModel(
         savedStateHandle[QUERY_KEY] = newQuery
     }
 
-    val items: Flow<PagingData<RepositoryModel>> = _query
-        .debounce(300)
-        .distinctUntilChanged()
-        .flatMapLatest { query ->
-            Pager(
-                config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
+    val items: Flow<PagingData<RepositoryModel>> =
+        _query.debounce(300).distinctUntilChanged().flatMapLatest { query ->
+            Pager(config = PagingConfig(pageSize = perPage, enablePlaceholders = false),
                 pagingSourceFactory = {
                     SearchProjectPagingSource(
                         getSearchRepositoriesUseCase,
                         query
                     )
-                }
-            ).flow
-        }
-        .cachedIn(viewModelScope)
+                }).flow
+        }.cachedIn(viewModelScope)
 }

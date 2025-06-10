@@ -21,12 +21,10 @@ fun GradientText(text: String, modifier: Modifier = Modifier) {
     )
 
     Text(
-        text = text,
-        style = TextStyle(
+        text = text, style = TextStyle(
             brush = gradient,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-        ),
-        modifier = modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+        ), modifier = modifier.padding(vertical = 8.dp, horizontal = 16.dp)
     )
 }

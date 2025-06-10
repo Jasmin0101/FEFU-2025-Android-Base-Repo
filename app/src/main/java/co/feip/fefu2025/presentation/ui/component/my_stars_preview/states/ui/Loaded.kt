@@ -19,8 +19,7 @@ import co.feip.fefu2025.presentation.ui.component.ui.gitlab.GitLabCard
 
 @Composable
 fun Loaded(
-    repositories: List<RepositoryModel>,
-    navigateRepository: (Int) -> Unit
+    repositories: List<RepositoryModel>, navigateRepository: (Int) -> Unit
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
@@ -30,22 +29,18 @@ fun Loaded(
         items(repositories) { repo ->
             Box(
                 modifier = Modifier.border(
-                    width = 4.dp,
-                    brush = Brush.linearGradient(
+                    width = 4.dp, brush = Brush.linearGradient(
                         colors = listOf(Color(0xffbf02b3), Color(0xffd18006))
-                    ),
-                    shape = RoundedCornerShape(10.dp)
+                    ), shape = RoundedCornerShape(10.dp)
                 )
             ) {
-                GitLabCard(
-                    repositoryName = repo.repositoryName,
+                GitLabCard(repositoryName = repo.repositoryName,
                     description = repo.description ?: " ",
                     stars = repo.stars,
                     forks = repo.forks,
                     avatarUrl = repo.avatarUrl,
                     modifier = Modifier.width(350.dp),
-                    onCardClick = { navigateRepository(repo.id) }
-                )
+                    onCardClick = { navigateRepository(repo.id) })
             }
         }
     }

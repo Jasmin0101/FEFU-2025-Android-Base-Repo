@@ -12,8 +12,7 @@ import kotlin.math.max
 class SearchProjectPagingSource(
     private val getSearchRepositoriesUseCase: GetSearchRepositoriesUseCase,
     private val query: String
-) :
-    PagingSource<Int, RepositoryModel>() {
+) : PagingSource<Int, RepositoryModel>() {
     private var STARTING_KEY = 1
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -26,12 +25,10 @@ class SearchProjectPagingSource(
             getSearchRepositoriesUseCase.execute(page = page, perPage = perPage, search = query)
 
         return LoadResult.Page(
-            data = repositories,
-            prevKey = when (page) {
+            data = repositories, prevKey = when (page) {
                 STARTING_KEY -> null
                 else -> ensureValidKey(key = page - 1)
-            },
-            nextKey = page + 1
+            }, nextKey = page + 1
         )
 
     }

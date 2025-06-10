@@ -31,14 +31,10 @@ fun Error() {
         )
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Oh, something brake :)",
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center
+                text = "Oh, something brake :)", fontSize = 20.sp, textAlign = TextAlign.Center
             )
         }
     }

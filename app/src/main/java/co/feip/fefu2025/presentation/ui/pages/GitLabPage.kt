@@ -66,8 +66,7 @@ fun GitLabPage(
         }, navigationIcon = {
             IconButton(onClick = { navController.navigateUp() }) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back"
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back"
                 )
             }
 
