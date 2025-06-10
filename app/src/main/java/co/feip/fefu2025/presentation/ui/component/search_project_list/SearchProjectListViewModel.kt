@@ -1,5 +1,6 @@
 package co.feip.fefu2025.presentation.ui.component.search_project_list
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -17,14 +18,21 @@ import kotlinx.coroutines.flow.flatMapLatest
 
 class SearchProjectListViewModel(
     private val getSearchRepositoriesUseCase: GetSearchRepositoriesUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val perPage = 20
-    private val _query = MutableStateFlow("")
-    val query = _query.asStateFlow()
 
+    private val perPage = 20
+
+    companion object {
+        private const val QUERY_KEY = "query_key"
+    }
+
+    private val _query = MutableStateFlow(savedStateHandle.get<String>(QUERY_KEY) ?: "")
+    val query = _query.asStateFlow()
 
     fun searchRepositories(newQuery: String) {
         _query.value = newQuery
+        savedStateHandle[QUERY_KEY] = newQuery
     }
 
     val items: Flow<PagingData<RepositoryModel>> = _query
@@ -42,6 +50,4 @@ class SearchProjectListViewModel(
             ).flow
         }
         .cachedIn(viewModelScope)
-
-
 }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,15 +33,23 @@ fun SearchScreenPage(
     viewModel: HomePageViewModel = koinViewModel(),
     searchViewModel: SearchProjectListViewModel = koinViewModel(),
 ) {
-    var searchQuery by remember { mutableStateOf("") }
+    val queryState by searchViewModel.query.collectAsState()
 
-    LaunchedEffect(Unit) {
+    var searchQuery by remember { mutableStateOf(queryState) }
+
+    LaunchedEffect(searchQuery) {
         snapshotFlow { searchQuery }
             .debounce(600)
             .distinctUntilChanged()
             .collect { debouncedQuery ->
                 searchViewModel.searchRepositories(debouncedQuery)
             }
+    }
+
+    LaunchedEffect(queryState) {
+        if (queryState != searchQuery) {
+            searchQuery = queryState
+        }
     }
 
     Scaffold(
@@ -58,7 +67,6 @@ fun SearchScreenPage(
             }
         },
     ) { paddingValues ->
-
 
         Column(
             modifier = Modifier.padding(paddingValues),

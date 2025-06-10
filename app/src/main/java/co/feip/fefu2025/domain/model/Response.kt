@@ -2,20 +2,28 @@ package co.feip.fefu2025.domain.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.google.gson.annotations.SerializedName
 import java.time.OffsetDateTime
 
 data class RepositoryResponse(
-    val id: Int,
-    val name: String,
-    val description: String?,
-    val path_with_namespace: String,
-    val web_url: String,
-    val avatar_url: String?,
-    val star_count: Int?,
-    val forks_count: Int?,
-    val created_at: String,
+    @SerializedName("id") val id: Int,
 
-    )
+    @SerializedName("name") val name: String,
+
+    @SerializedName("description") val description: String?,
+
+    @SerializedName("path_with_namespace") val path_with_namespace: String,
+
+    @SerializedName("web_url") val web_url: String,
+
+    @SerializedName("avatar_url") val avatar_url: String?,
+
+    @SerializedName("star_count") val star_count: Int?,
+
+    @SerializedName("forks_count") val forks_count: Int?,
+
+    @SerializedName("created_at") val created_at: String
+)
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun RepositoryResponse.toRepository(languages: Map<String, Float> = emptyMap()): RepositoryModel {
