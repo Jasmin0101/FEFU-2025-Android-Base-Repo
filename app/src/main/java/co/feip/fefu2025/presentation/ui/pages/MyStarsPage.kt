@@ -10,78 +10,38 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import co.feip.fefu2025.data.repository.RepositoryRepository
-import co.feip.fefu2025.domain.usecase.GetRepositoriesUseCase
-import co.feip.fefu2025.navigation.DefaultNavigator
-import co.feip.fefu2025.navigation.Destination
-import co.feip.fefu2025.presentation.ui.features.ui.GradientText
-import co.feip.fefu2025.presentation.ui.states.home_page.MyStarsStatesPage
-import co.feip.fefu2025.presentation.ui.states.my_stars.ui.ErrorMyStarsPage
-import co.feip.fefu2025.presentation.ui.states.my_stars.ui.LoadedMyStarsPage
-import co.feip.fefu2025.presentation.ui.states.my_stars.ui.LoadingMyStarsPage
-import co.feip.fefu2025.presentation.viewmodel.RepositoriesViewModel
+import co.feip.fefu2025.presentation.ui.component.my_stars_list.MyStarsList
+import co.feip.fefu2025.presentation.ui.component.ui.GradientText
+import co.feip.fefu2025.presentation.viewmodel.HomePageViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyStarsPage(
-    viewModel: RepositoriesViewModel = koinViewModel(),
-    modifier: Modifier = Modifier
+    viewModel: HomePageViewModel = koinViewModel(),
 ) {
-    val repositories by viewModel.repositories
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
+    Scaffold(topBar = {
+        TopAppBar(title = {
 
-                  GradientText("My Stars")
-                },
-                navigationIcon = {
-                    IconButton(onClick = { viewModel.navigateHome() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
-
-        when (val state = viewModel.myStarsPageState) {
-            is MyStarsStatesPage.Loading -> {
-                LoadingMyStarsPage( paddingValues)
+            GradientText("My Stars")
+        }, navigationIcon = {
+            IconButton(onClick = { viewModel.navigateHome() }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back"
+                )
             }
-            is MyStarsStatesPage.Loaded -> {
-                LoadedMyStarsPage(viewModel, paddingValues )
-            }
-            is MyStarsStatesPage.Error -> {
-                ErrorMyStarsPage(viewModel, paddingValues)
-            }
+        })
+    }) { paddingValues ->
 
-            else -> {}
-        }
+        MyStarsList(
+            navigateRepository = { id -> (viewModel.navigateRepository(id)) },
+            paddingValues = paddingValues,
+        )
+
+
     }
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-@Preview
-private fun  PreviewMyStars(){
-    MyStarsPage(
-        viewModel = RepositoriesViewModel(
-            getRepositoriesUseCase = GetRepositoriesUseCase(
-                repository = RepositoryRepository()
-            ),
-            navigator = DefaultNavigator(
-                startDestination = Destination.BaseGraph
-            )
-        )
-    )
-}

@@ -1,15 +1,13 @@
 package co.feip.fefu2025.data.repository_mock
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import co.feip.fefu2025.R
-import co.feip.fefu2025.domain.model.Repository
+import co.feip.fefu2025.domain.model.RepositoryModel
 import java.time.LocalDate
 
 @SuppressLint("NewApi")
 val repositories = listOf(
-    Repository(
+    RepositoryModel(
         id = 1,
         repositoryName = "GitLab App",
         description = "Приложение для работы с GitLab API",
@@ -20,7 +18,7 @@ val repositories = listOf(
         languages = mapOf("Kotlin" to 70f, "Java" to 30f),
         date = LocalDate.of(2025, 3, 1)
     ),
-    Repository(
+    RepositoryModel(
         id = 2,
         repositoryName = "Custom FlexBoxLayout",
         description = "Кастомный ViewGroup для динамического размещения элементов",
@@ -31,7 +29,7 @@ val repositories = listOf(
         languages = mapOf("Kotlin" to 100f),
         date = LocalDate.of(2025, 2, 15)
     ),
-    Repository(
+    RepositoryModel(
         id = 3,
         repositoryName = "Anime Genre View",
         description = "Компонент для отображения жанров аниме",
@@ -42,7 +40,7 @@ val repositories = listOf(
         languages = mapOf("Kotlin" to 90f, "XML" to 10f),
         date = LocalDate.of(2025, 1, 28)
     ),
-    Repository(
+    RepositoryModel(
         id = 4,
         repositoryName = "Kotlin SVD Compressor",
         description = "Алгоритм сжатия изображений с использованием SVD",
@@ -53,7 +51,7 @@ val repositories = listOf(
         languages = mapOf("Kotlin" to 100f),
         date = LocalDate.of(2025, 1, 5)
     ),
-    Repository(
+    RepositoryModel(
         id = 5,
         repositoryName = "Flutter Web Converter",
         description = "Конвертер HTML/CSS в Flutter-код",
@@ -64,7 +62,7 @@ val repositories = listOf(
         languages = mapOf("Dart" to 95f, "HTML" to 5f),
         date = LocalDate.of(2024, 12, 22)
     ),
-    Repository(
+    RepositoryModel(
         id = 6,
         repositoryName = "Jetpack Compose UI",
         description = "Набор лучших практик для Compose",
@@ -75,7 +73,7 @@ val repositories = listOf(
         languages = mapOf("Kotlin" to 100f),
         date = LocalDate.of(2024, 11, 20)
     ),
-    Repository(
+    RepositoryModel(
         id = 7,
         repositoryName = "Android Architecture Samples",
         description = "Примеры архитектурных решений на Android",
@@ -86,7 +84,7 @@ val repositories = listOf(
         languages = mapOf("Kotlin" to 70f, "Java" to 30f),
         date = LocalDate.of(2024, 10, 18)
     ),
-    Repository(
+    RepositoryModel(
         id = 8,
         repositoryName = "Kotlin Coroutines Guide",
         description = "Руководство по Kotlin Coroutines",
@@ -97,7 +95,7 @@ val repositories = listOf(
         languages = mapOf("Kotlin" to 100f),
         date = LocalDate.of(2024, 8, 1)
     ),
-    Repository(
+    RepositoryModel(
         id = 9,
         repositoryName = "Retrofit API Client",
         description = "Пример использования Retrofit с Hilt и Flow",
@@ -108,7 +106,7 @@ val repositories = listOf(
         languages = mapOf("Kotlin" to 100f),
         date = LocalDate.of(2024, 7, 11)
     ),
-    Repository(
+    RepositoryModel(
         id = 10,
         repositoryName = "Room Database Example",
         description = "Пример работы с Room и Jetpack ViewModel",

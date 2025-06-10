@@ -1,25 +1,13 @@
 package co.feip.fefu2025.presentation.ui.pages
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,28 +16,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import co.feip.fefu2025.presentation.custom.ProgrammingLanguageTag
-import co.feip.fefu2025.presentation.ui.states.git_lab_page.GitLabPageState
+import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageState
+import co.feip.fefu2025.presentation.ui.component.git_lab_page.GitLabPageViewModel
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.ErrorGitLabState
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.LoadedGitLabState
 import co.feip.fefu2025.presentation.ui.states.git_lab_page.ui.LoadingGitLabState
-import co.feip.fefu2025.presentation.ui.states.home_page.HomePageState
-import co.feip.fefu2025.presentation.ui.states.home_page.ui.ErrorHomePage
-import co.feip.fefu2025.presentation.viewmodel.RepositoryViewModel
 import org.koin.androidx.compose.koinViewModel
 import views.FexBoxLayoutCustom
 import kotlin.random.Random
@@ -59,42 +37,62 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GitLabPage(
-    viewModel: RepositoryViewModel = koinViewModel(),
-    repositoryId : Int,
-    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
+    viewModel: GitLabPageViewModel = koinViewModel(),
+    repositoryId: Int,
+    navController: NavController
 ) {
-    val repository by viewModel.repository
-
-    viewModel.loadRepository(repositoryId)
-
-    Scaffold (
-        topBar = {
-            TopAppBar(
-                title = {
-                    repository?.let { Text(text = it.repositoryName) }
-                },
-                navigationIcon = {
-                    IconButton(onClick = {viewModel.navigateHome()  }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
-            )
+    val repository = when (val state = viewModel.state) {
+        is GitLabPageState.Loading -> {
+            null
         }
-    ){
 
-        paddingValues ->
-        when (val state = viewModel.gitLabPageState) {
+        is GitLabPageState.Loaded -> {
+            state.repositoryModel
+        }
+
+        is GitLabPageState.Error -> {
+            null
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.refresh(repositoryId)
+    }
+
+
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            repository?.let { Text(text = it.repositoryName) }
+        }, navigationIcon = {
+            IconButton(onClick = { navController.navigateUp() }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back"
+                )
+            }
+
+        })
+    }) {
+
+            paddingValues ->
+        when (val state = viewModel.state) {
             is GitLabPageState.Loading -> {
                 LoadingGitLabState(paddingValues)
             }
+
             is GitLabPageState.Loaded -> {
-                LoadedGitLabState(repositoryId = repositoryId, viewModel = viewModel, paddingValues = paddingValues)
+                LoadedGitLabState(
+                    repositoryId = repositoryId,
+                    viewModel = viewModel,
+                    paddingValues = paddingValues,
+                    repository = state.repositoryModel,
+                    isStared = state.isStared,
+
+                    modifier = Modifier,
+                )
             }
+
             is GitLabPageState.Error -> {
-                ErrorGitLabState(repositoryId, viewModel)
+                ErrorGitLabState()
             }
         }
     }
@@ -105,7 +103,6 @@ fun CustomFlexBoxScreen(
     array: List<String>,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
 
     AndroidView(
         factory = { ctx ->
@@ -124,21 +121,13 @@ fun CustomFlexBoxScreen(
                 invalidate()
             }
         },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background, shape = MaterialTheme.shapes.medium)
             .padding(16.dp),
     )
 }
 
-@ExperimentalMaterial3Api
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-private fun PreviewPage(modifier: Modifier = Modifier) {
-    GitLabPage(
-        repositoryId = 1
-    )
-}
 
-fun getRandomColor(): Color = Color(Random.nextInt(0, 256), Random.nextInt(0, 256), Random.nextInt(0, 256))
+fun getRandomColor(): Color =
+    Color(Random.nextInt(0, 256), Random.nextInt(0, 256), Random.nextInt(0, 256))
